@@ -1,7 +1,7 @@
 import React from 'react';
 
 type TodolistPropsType = {
-    title?: string,
+    title?: string
     tasks: Array<TaskType>
 }
 
