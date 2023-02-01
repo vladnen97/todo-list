@@ -1,8 +1,8 @@
 .App {
+  font-size: 20px;
   padding: 30px;
   display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
-.App > div {
-  margin-right: 50px;
-}
