@@ -1,25 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import {Tasks, TasksPropsType} from './components/Tasks';
 import {Todolist} from './components/Todolist';
-
+import {Counter} from './components/Counter';
 
 
 function App() {
-
-    const title1 = 'What to learn';
-    const title2 = 'What to watch';
-
-    const tasks1 = [
-        {id: 1, title: 'HTML&CSS', isDone: true},
-        {id: 2, title: 'JS', isDone: true},
-        {id: 3, title: 'ReactJS', isDone: false},
-    ]
-    const tasks2 = [
-        {id: 1, title: 'FMJ', isDone: true},
-        {id: 2, title: 'Dune', isDone: true},
-        {id: 3, title: 'Mad Max', isDone: true}
-    ]
 
     const data1: TasksPropsType = {
         title: 'What to do',
@@ -75,7 +61,7 @@ function App() {
             'Ralphie Hebert',
         ]
     }
-    const data2: TasksPropsType= {
+    const data2: TasksPropsType = {
         title: 'What to learn',
         tasks: [
             {taskId: 1, title: 'HTML&CSS', isDone: true},
@@ -135,12 +121,34 @@ function App() {
         ]
     }
 
+    let initTasks1 = [
+        {id: 1, title: 'HTML&CSS', isDone: true},
+        {id: 2, title: 'JS', isDone: true},
+        {id: 3, title: 'ReactJS', isDone: false},
+        {id: 4, title: 'Redux', isDone: false},
+        {id: 5, title: 'Typescript', isDone: false},
+        {id: 6, title: 'Rest API', isDone: false},
+    ]
+    let initTasks2 = [
+        {id: 1, title: 'FMJ', isDone: true},
+        {id: 2, title: 'Dune', isDone: true},
+        {id: 3, title: 'Mad Max', isDone: true}
+    ]
+
+    let [tasks, setTasks] = useState(initTasks1);
+
+    function deleteTask(id: number) {
+        let result = tasks.filter((t) => t.id !== id);
+        setTasks(result);
+    }
+
     return (
         <div className="App">
-            <Todolist title={title1} tasks={tasks1}/>
-            <Todolist title={title2} tasks={tasks2}/>
-            <Tasks title={data1.title} tasks={data1.tasks} students={data1.students}/>
-            <Tasks title={data2.title} tasks={data2.tasks} students={data2.students}/>
+            <Todolist
+                title={'What to learn'}
+                tasks={tasks}
+                deleteTask={deleteTask}
+            />
         </div>
     );
 }

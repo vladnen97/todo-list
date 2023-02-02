@@ -5,7 +5,6 @@ type TaskType = {
     title: string
     isDone: boolean
 }
-
 type TasksPropsType = {
     title: string
     tasks: TaskType[]
