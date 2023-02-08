@@ -14,8 +14,7 @@ function App() {
     ]);
 
     function removeTask(id: number) {
-        let filteredTasks = tasks.filter(t => t.id !== id);
-        setTasks(filteredTasks);
+        setTasks(tasks.filter(t => t.id !== id));
     }
     function deleteAllTasks() {
         setTasks([]);

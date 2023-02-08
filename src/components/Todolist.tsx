@@ -30,7 +30,6 @@ export function Todolist(props: PropsType) {
         tasksForTodolist = props.tasks.filter((t) => t.id < 4);
     }
 
-
     return <div>
         <h3>{props.title}</h3>
         <div>
