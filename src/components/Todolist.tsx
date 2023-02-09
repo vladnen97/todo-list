@@ -1,58 +1,69 @@
-import React, {useState} from 'react';
-import {FilterValuesType} from '../App';
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import {FilterValuesType, TaskType} from '../App';
 
-type TaskType = {
-    id: number
-    title: string
-    isDone: boolean
-}
+
 type PropsType = {
     title: string
     tasks: Array<TaskType>
-    removeTask: (taskId: number) => void
-    deleteAll: () => void
+    removeTask: (taskId: string) => void
+    addTask: (task: string) => void
 }
 
 export function Todolist(props: PropsType) {
-    let [filter, setFilter] = useState<FilterValuesType>('all');
+    const [filter, setFilter] = useState<FilterValuesType>('all');
+    const [message, setMessage] = useState<string>('')
 
-    function changeFilter(value: FilterValuesType) {
+    function changeFilter(value: FilterValuesType): void {
         setFilter(value);
     }
+    function onChangeInputHandler(event: ChangeEvent<HTMLInputElement>) {
+        setMessage(event.currentTarget.value);
+    }
+    function onKeyPressInputHandler(event: KeyboardEvent<HTMLInputElement>) {
+        if (event.charCode === 13){
+            props.addTask(message);
+            setMessage('');
+        }
+    }
+    function addTaskHandler() {
+        props.addTask(message);
+        setMessage('');
+    }
 
-    let tasksForTodolist = props.tasks;
+
+    let tasksForTodolist:Array<TaskType> = props.tasks;
 
     if (filter === 'active') {
         tasksForTodolist = props.tasks.filter(t => !t.isDone);
     } else if (filter === 'completed') {
         tasksForTodolist = props.tasks.filter(t => t.isDone);
-    } else if (filter === 'three') {
-        tasksForTodolist = props.tasks.filter((t) => t.id < 4);
     }
+
+    let list: JSX.Element[] = tasksForTodolist.map(t => <li key={t.id}>
+        <input type="checkbox" checked={t.isDone}/>
+        <span>{t.title} </span>
+        <button onClick={() => props.removeTask(t.id)}> X</button>
+    </li>)
 
     return <div>
         <h3>{props.title}</h3>
         <div>
-            <input/>
-            <button>+</button>
+            <input
+                value={message}
+                onChange={onChangeInputHandler}
+                onKeyPress={onKeyPressInputHandler}
+            />
+            <button onClick={addTaskHandler}>
+                +
+            </button>
         </div>
         <ul>
-            {
-                tasksForTodolist.map(t => <li key={t.id}>
-                    <input type="checkbox" checked={t.isDone}/>
-                    <span>{t.title} </span>
-                    <button onClick={() => props.removeTask(t.id)}> X </button>
-                </li>)
-            }
+            {list}
         </ul>
-        <div>
-            <button onClick={props.deleteAll}>Delete All</button>
-        </div>
         <div>
             <button onClick={() => changeFilter('all')}>All</button>
             <button onClick={() => changeFilter('active')}>Active</button>
             <button onClick={() => changeFilter('completed')}>Completed</button>
-            <button onClick={() => changeFilter('three')}>show thirst three</button>
         </div>
     </div>
 }
