@@ -19,10 +19,13 @@ function App() {
         {id: v1(), title: 'GraphQL', isDone: false},
     ]);
 
+    function changeChecked(id: string) {
+        let changedTasks = tasks.map(task => task.id === id ? {...task, isDone: !task.isDone} : task);
+        setTasks(changedTasks);
+    }
     function removeTask(id: string): void {
         setTasks(tasks.filter(t => t.id !== id));
     }
-
     function addTask(task: string): void {
         let newTask: TaskType = {id: v1(), title: task, isDone: false};
         setTasks([newTask, ...tasks]);
@@ -34,7 +37,8 @@ function App() {
             <Todolist title="What to learn"
                       tasks={tasks}
                       removeTask={removeTask}
-                      addTask={addTask}/>
+                      addTask={addTask}
+                      changeChecked={changeChecked}/>
         </div>
     );
 }

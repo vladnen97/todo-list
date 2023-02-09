@@ -7,6 +7,7 @@ type PropsType = {
     tasks: Array<TaskType>
     removeTask: (taskId: string) => void
     addTask: (task: string) => void
+    changeChecked: (id: string) => void
 }
 
 export function Todolist(props: PropsType) {
@@ -16,16 +17,16 @@ export function Todolist(props: PropsType) {
     function changeFilter(value: FilterValuesType): void {
         setFilter(value);
     }
-    function onChangeInputHandler(event: ChangeEvent<HTMLInputElement>) {
+    function onChangeInputHandler(event: ChangeEvent<HTMLInputElement>): void {
         setMessage(event.currentTarget.value);
     }
-    function onKeyPressInputHandler(event: KeyboardEvent<HTMLInputElement>) {
+    function onKeyPressInputHandler(event: KeyboardEvent<HTMLInputElement>): void {
         if (event.charCode === 13){
             props.addTask(message);
             setMessage('');
         }
     }
-    function addTaskHandler() {
+    function addTaskHandler(): void {
         props.addTask(message);
         setMessage('');
     }
@@ -40,7 +41,7 @@ export function Todolist(props: PropsType) {
     }
 
     let list: JSX.Element[] = tasksForTodolist.map(t => <li key={t.id}>
-        <input type="checkbox" checked={t.isDone}/>
+        <input type="checkbox" checked={t.isDone} onChange={() => props.changeChecked(t.id)}/>
         <span>{t.title} </span>
         <button onClick={() => props.removeTask(t.id)}> X</button>
     </li>)
@@ -53,9 +54,7 @@ export function Todolist(props: PropsType) {
                 onChange={onChangeInputHandler}
                 onKeyPress={onKeyPressInputHandler}
             />
-            <button onClick={addTaskHandler}>
-                +
-            </button>
+            <button onClick={addTaskHandler}> + </button>
         </div>
         <ul>
             {list}
