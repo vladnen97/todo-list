@@ -38,7 +38,6 @@ export function App() {
     }
 
     let tasksForTodolist = tasks;
-
     if (filter === 'active') {
         tasksForTodolist = tasks.filter(t => !t.isDone);
     }
@@ -48,6 +47,14 @@ export function App() {
 
     return (
         <div className="App">
+            <Todolist title="What to learn"
+                      tasks={tasksForTodolist}
+                      removeTask={removeTask}
+                      changeFilter={changeFilter}
+                      addTask={addTask}
+                      changeStatus={changeStatus}
+                      filter={filter}/>
+
             <Todolist title="What to learn"
                       tasks={tasksForTodolist}
                       removeTask={removeTask}
