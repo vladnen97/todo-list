@@ -2,13 +2,15 @@ import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {FilterValuesType, TaskType} from './App';
 
 type PropsType = {
+    id: string
     title: string
     tasks: Array<TaskType>
     filter: FilterValuesType
-    removeTask: (taskId: string) => void
-    changeFilter: (value: FilterValuesType) => void
-    addTask: (title: string) => void
-    changeStatus: (taskId: string, isDone: boolean) => void
+    removeTask: (todolistID: string,taksId: string) => void
+    changeFilter: (todolistID: string, value: FilterValuesType) => void
+    addTask: (todolistID: string, title: string) => void
+    changeStatus: (todolistID: string, taskId: string, isDone: boolean) => void
+    deleteTodolist: (todolistID: string) => void
 }
 
 export function Todolist(props: PropsType) {
@@ -18,7 +20,7 @@ export function Todolist(props: PropsType) {
     const addTask = () => {
         const trimmedTitle = title.trim()
         if (trimmedTitle) {
-            props.addTask(trimmedTitle);
+            props.addTask(props.id, trimmedTitle);
             setTitle('');
         } else {
             setTitle('');
@@ -34,12 +36,15 @@ export function Todolist(props: PropsType) {
             addTask();
         }
     };
-    const filterHandler = (filter: FilterValuesType) => props.changeFilter(filter);
+    const filterHandler = (filter: FilterValuesType) => props.changeFilter(props.id, filter);
+    const deleteTodolistHandler = () => {
+        props.deleteTodolist(props.id)
+    }
 
     const mappedTasks = props.tasks.map(t => {
 
-        const onClickHandler = () => props.removeTask(t.id);
-        const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => props.changeStatus(t.id, e.currentTarget.checked);
+        const onClickHandler = () => props.removeTask(props.id, t.id);
+        const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => props.changeStatus(props.id, t.id, e.currentTarget.checked);
 
         return (
             <li key={t.id} className={t.isDone ? 'is-done' : ''}>
@@ -51,7 +56,7 @@ export function Todolist(props: PropsType) {
 
 
     return <div>
-        <h3>{props.title}</h3>
+        <h3>{props.title} <button onClick={deleteTodolistHandler}> X </button></h3>
         <div>
             <input value={title}
                    className={error ? 'error' : ''}
