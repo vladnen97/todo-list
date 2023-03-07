@@ -54,6 +54,11 @@ export function App() {
         delete tasksCopy[todolistID];
         setTasks(tasksCopy);
     }
+    function changeTodolistTitle(todolistID: string, newTitle: string) {
+        const trimmedNewTitle = newTitle.trim()
+        setTodoLists(todoLists.map(el => el.id === todolistID && trimmedNewTitle !== '' ? {...el, title: trimmedNewTitle} : el));
+    }
+
     function addTask(todolistID: string, title: string): void {
         const newTasks = [{id: v1(), title: title, isDone: false}, ...tasks[todolistID]];
         setTasks({...tasks, [todolistID]: newTasks});
@@ -62,12 +67,16 @@ export function App() {
         const filteredTasks = tasks[todolistID].filter(el => el.id !== taksId);
         setTasks({...tasks, [todolistID]: filteredTasks});
     }
+    function changeFilter(todolistID: string, value: FilterValuesType): void {
+        setTodoLists(todoLists.map(el => el.id === todolistID ? {...el, filter:value} : el))
+    }
     function changeStatus(todolistID: string, taskId: string, isDone: boolean): void {
         const darova = tasks[todolistID].map(el => el.id === taskId ? {...el, isDone: isDone} : el)
         setTasks({...tasks, [todolistID]: darova})
     }
-    function changeFilter(todolistID: string, value: FilterValuesType): void {
-        setTodoLists(todoLists.map(el => el.id === todolistID ? {...el, filter:value} : el))
+    function changeTaskTitle(todolistID: string, taskId: string, newTitle: string) {
+        const trimmedNewTitle = newTitle.trim()
+        setTasks({...tasks, [todolistID]: tasks[todolistID].map(el => el.id === taskId && trimmedNewTitle !== '' ? {...el, title: trimmedNewTitle} : el)})
     }
 
 
@@ -96,6 +105,8 @@ export function App() {
                                   changeStatus={changeStatus}
                                   filter={el.filter}
                                   deleteTodolist={deleteTodolist}
+                                  changeTaskTitle={changeTaskTitle}
+                                  changeTodolistTitle={changeTodolistTitle}
                         />
                     )
                 })
