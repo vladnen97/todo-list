@@ -9,18 +9,18 @@ export function EditableSpan(props: EditableSpanPropsType) {
     const [editMode, setEditMode] = useState<boolean>(false)
     const [title, setTitle] = useState<string>('')
 
-    const activateEditModeHandler = () => {
+    const activateEditMode = () => {
         setEditMode(true);
         setTitle(props.title);
     }
-    const activateViewModeHandler = () => {
+    const activateViewMode = () => {
         setEditMode(false);
         props.onChange(title);
     }
     const onTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value);
     const onEnterPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
-            activateViewModeHandler()
+            activateViewMode()
         }
     }
 
@@ -29,10 +29,10 @@ export function EditableSpan(props: EditableSpanPropsType) {
             ? <input type="text"
                      value={title}
                      autoFocus
-                     onBlur={activateViewModeHandler}
+                     onBlur={activateViewMode}
                      onChange={onTitleChangeHandler}
                      onKeyDown={onEnterPressHandler}
             />
-            : <span onDoubleClick={activateEditModeHandler}> {props.title} </span>
+            : <span onDoubleClick={activateEditMode}> {props.title} </span>
     )
 }

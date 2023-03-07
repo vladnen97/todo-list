@@ -58,6 +58,9 @@ export function App() {
         const trimmedNewTitle = newTitle.trim()
         setTodoLists(todoLists.map(el => el.id === todolistID && trimmedNewTitle !== '' ? {...el, title: trimmedNewTitle} : el));
     }
+    function changeFilter(todolistID: string, value: FilterValuesType): void {
+        setTodoLists(todoLists.map(el => el.id === todolistID ? {...el, filter:value} : el))
+    }
 
     function addTask(todolistID: string, title: string): void {
         const newTasks = [{id: v1(), title: title, isDone: false}, ...tasks[todolistID]];
@@ -66,9 +69,6 @@ export function App() {
     function removeTask(todolistID: string,taksId: string): void {
         const filteredTasks = tasks[todolistID].filter(el => el.id !== taksId);
         setTasks({...tasks, [todolistID]: filteredTasks});
-    }
-    function changeFilter(todolistID: string, value: FilterValuesType): void {
-        setTodoLists(todoLists.map(el => el.id === todolistID ? {...el, filter:value} : el))
     }
     function changeStatus(todolistID: string, taskId: string, isDone: boolean): void {
         const darova = tasks[todolistID].map(el => el.id === taskId ? {...el, isDone: isDone} : el)
