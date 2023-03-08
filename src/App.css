@@ -1,31 +1,9 @@
-
-h1, h2 ,h3 ,h4 , h5 , h6 {
-  margin-top: 0;
-}
-
-.App {
-  padding: 30px;
-  display: flex;
-}
-
-.App > div {
-  margin-right: 50px;
-}
-
-.error {
-  border: red 1px solid;
-}
-
-.error-message {
-  color: red;
-}
-
-.active-filter {
-  background-color: aquamarine;
-  outline: none;
-}
-
 .is-done {
   text-decoration: line-through;
+}
+
+li {
+  display: flex;
+  align-items: center;
 }
 
