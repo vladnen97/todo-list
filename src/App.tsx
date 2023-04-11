@@ -127,10 +127,9 @@ export function App() {
                             }
 
                             return (
-                                <Grid item>
-                                    <Paper elevation={3} style={{padding: '15px'}}>
-                                        <Todolist key={el.id}
-                                                  id={el.id}
+                                <Grid item key={el.id}>
+                                    <Paper elevation={2} style={{padding: '15px'}}>
+                                        <Todolist id={el.id}
                                                   title={el.title}
                                                   tasks={tasksForTodolist}
                                                   removeTask={removeTask}
