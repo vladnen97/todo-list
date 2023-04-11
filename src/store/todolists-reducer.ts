@@ -4,7 +4,9 @@ import {v1} from 'uuid';
 
 export type TodolistsActionsType = ReturnType<typeof removeTodolistAC> | ReturnType<typeof addTodolistAC> | ReturnType<typeof changeTodolistTitleAC> | ReturnType<typeof changeTodolistFilterlistAC>
 
-export const todolistsReducer = (state: Array<TodoListType>, action: TodolistsActionsType): Array<TodoListType> => {
+const initState: Array<TodoListType> = []
+
+export const todolistsReducer = (state = initState, action: TodolistsActionsType): Array<TodoListType> => {
     switch (action.type) {
 
         case 'REMOVE-TODOLIST':
