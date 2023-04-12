@@ -1,16 +1,17 @@
-import React, {ChangeEvent} from 'react';
+import React, {memo, useCallback} from 'react';
 import {FilterValuesType, TaskType} from './App';
 import {AddItemForm} from './AddItemForm';
 import {EditableSpan} from './EditableSpan';
-import {Button, ButtonGroup, Checkbox, IconButton} from '@mui/material';
-import {Delete, DisabledByDefaultOutlined} from '@mui/icons-material';
+import {Button, ButtonGroup, IconButton} from '@mui/material';
+import {Delete} from '@mui/icons-material';
+import {Task} from './Task';
 
 type TodolistPropsType = {
     id: string
     title: string
     tasks: Array<TaskType>
     filter: FilterValuesType
-    removeTask: (todolistID: string, taksId: string) => void
+    removeTask: (todolistID: string, taskId: string) => void
     changeFilter: (todolistID: string, value: FilterValuesType) => void
     addTask: (todolistID: string, title: string) => void
     changeStatus: (todolistID: string, taskId: string, isDone: boolean) => void
@@ -19,39 +20,31 @@ type TodolistPropsType = {
     changeTodolistTitle: (todolistID: string, newTitle: string) => void
 }
 
-export function Todolist(props: TodolistPropsType) {
+export const Todolist = memo((props: TodolistPropsType) => {
 
-    const filterHandler = (filter: FilterValuesType) => props.changeFilter(props.id, filter);
-    const deleteTodolistHandler = () => {
-        props.deleteTodolist(props.id)
+    let tasks = props.tasks
+
+    const filterHandler = (filter: FilterValuesType) => props.changeFilter(props.id, filter)
+    const deleteTodolistHandler = () => {props.deleteTodolist(props.id)}
+    const addTask = useCallback((title: string) => {props.addTask(props.id, title)}, [props.addTask, props.id])
+    const changeTodolistTitleHandler = useCallback((newTitle: string) => {
+        props.changeTodolistTitle(props.id, newTitle)}, [props.changeTodolistTitle, props.id])
+
+    if (props.filter === 'active') {
+        tasks = tasks.filter(t => !t.isDone);
     }
-    const addTask = (title: string) => {
-        props.addTask(props.id, title);
-    }
-    const changeTodolistTitleHandler = (newTitle: string) => {
-        props.changeTodolistTitle(props.id, newTitle);
+    if (props.filter === 'completed') {
+        tasks = tasks.filter(t => t.isDone);
     }
 
-    const mappedTasks = props.tasks.map(t => {
+    const removeTask = useCallback((taskId: string) => props.removeTask(props.id, taskId), [props.removeTask, props.id])
+    const changeStatus = useCallback((taskId: string, newIsDone: boolean) => {
+        props.changeStatus(props.id, taskId, newIsDone)
+    }, [props.changeStatus, props.id])
+    const changeTaskTitle = useCallback((taskId: string, value: string) => {
+        props.changeTaskTitle(props.id, taskId, value)}, [props.changeTaskTitle, props.id])
 
-        const onClickHandler = () => props.removeTask(props.id, t.id);
-        const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => props.changeStatus(props.id, t.id, e.currentTarget.checked);
-        const onChangeTaskTitleHandler = (value: string) => {
-            props.changeTaskTitle(props.id, t.id, value);
-        }
-
-        return (
-            <li key={t.id} className={t.isDone ? 'is-done' : ''} >
-                <IconButton  aria-label="remove" size="small" onClick={onClickHandler}>
-                    <DisabledByDefaultOutlined fontSize="medium"/>
-                </IconButton>
-                <Checkbox checked={t.isDone}
-                          onChange={onChangeStatusHandler}
-                size={'medium'}/>
-                <EditableSpan title={t.title} onChange={onChangeTaskTitleHandler}/>
-            </li>
-        )
-    })
+    const mappedTasks = tasks.map(el => <Task key={el.id} task={el} removeTask={removeTask} changeStatus={changeStatus} changeTaskTitle={changeTaskTitle}/>)
 
 
     return <div style={  {display: 'flex', flexDirection: 'column', alignItems: 'center'}  }>
@@ -92,4 +85,4 @@ export function Todolist(props: TodolistPropsType) {
             </Button>
         </ButtonGroup>
     </div>
-}
+})
