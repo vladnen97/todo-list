@@ -19,7 +19,7 @@ type Story = StoryObj<typeof AddItemForm>
 
 export const AddItemFormStory: Story = {}
 
-const AddItemFormStoryWithError = (props: AddItemFormPropsType) => {
+const AddItemFormStoryWithhooks = (props: AddItemFormPropsType) => {
         const [title, setTitle] = useState<string>('');
         const [error, setError] = useState<string | null>('Title is required');
 
@@ -65,6 +65,6 @@ const AddItemFormStoryWithError = (props: AddItemFormPropsType) => {
         )
 }
 
-export const Test: Story = {
-    render: args => <AddItemFormStoryWithError {...args}/>
+export const AddItemFormStoryWithError: Story = {
+    render: args => <AddItemFormStoryWithhooks {...args}/>
 }
