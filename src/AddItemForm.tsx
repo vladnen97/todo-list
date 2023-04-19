@@ -1,9 +1,10 @@
 import React, {ChangeEvent, KeyboardEvent, memo, useState} from 'react';
 import {Button, TextField} from '@mui/material';
 
-type AddItemFormPropsType = {
+export type AddItemFormPropsType = {
     /**
-     * Add item with some value
+     * Add item with some title
+     * @param title title
      */
     addItem: (title: string) => void
 }

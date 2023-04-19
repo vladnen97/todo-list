@@ -3,6 +3,10 @@ import {TextField} from '@mui/material';
 
 type EditableSpanPropsType = {
     title: string
+    /**
+     * commit changes handler
+     * @param value that need to be committed
+     */
     onChange: (value: string) => void
 }
 
