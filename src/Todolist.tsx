@@ -7,16 +7,64 @@ import {Delete} from '@mui/icons-material';
 import {Task} from './Task';
 
 type TodolistPropsType = {
+    /**
+     * todolist id
+     */
     id: string
+    /**
+     * todolist title
+     */
     title: string
+    /**
+     * current todolist tasks
+     */
     tasks: Array<TaskType>
+    /**
+     * current todolist filter status
+     */
     filter: FilterValuesType
+    /**
+     * remove current todolist task handler
+     * @param todolistID todolist id
+     * @param taskId task id
+     */
     removeTask: (todolistID: string, taskId: string) => void
+    /**
+     * change current todolist filter status handler
+     * @param todolistID todolist id
+     * @param value new filter value
+     */
     changeFilter: (todolistID: string, value: FilterValuesType) => void
+    /**
+     * add task to current todolist handler
+     * @param todolistID todolist id
+     * @param title new todolist title
+     */
     addTask: (todolistID: string, title: string) => void
+    /**
+     * change current todolist task status handler
+     * @param todolistID todolist id
+     * @param taskId task id
+     * @param isDone new status
+     */
     changeStatus: (todolistID: string, taskId: string, isDone: boolean) => void
+    /**
+     * delete current todolist handler
+     * @param todolistID todolist id
+     */
     deleteTodolist: (todolistID: string) => void
+    /**
+     * change current todolist task title handler
+     * @param todolistID todolist id
+     * @param taskId task id
+     * @param newTitle new task title
+     */
     changeTaskTitle: (todolistID: string, taskId: string, newTitle: string) => void
+    /**
+     * change current todolist title handler
+     * @param todolistID todolist id
+     * @param newTitle new todolist title
+     */
     changeTodolistTitle: (todolistID: string, newTitle: string) => void
 }
 
