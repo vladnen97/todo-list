@@ -11,14 +11,19 @@ type TaskPropsType = {
     task: TaskType
     /**
      * remove task handler
+     * @param taskId task id
      */
     removeTask: (taskId: string) => void
     /**
      * change task status handler
+     * @param taskId task id
+     * @param isDone new task status
      */
     changeStatus: (taskId: string, isDone: boolean) => void
     /**
      * change task title handler
+     * @param taskId task id
+     * @param newTitle new task title
      */
     changeTaskTitle: (taskId: string, newTitle: string) => void
 }
