@@ -2,6 +2,9 @@ import React, {ChangeEvent, KeyboardEvent, memo, useState} from 'react';
 import {Button, TextField} from '@mui/material';
 
 type AddItemFormPropsType = {
+    /**
+     * Add item with some value
+     */
     addItem: (title: string) => void
 }
 

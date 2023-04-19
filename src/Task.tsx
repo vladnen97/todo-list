@@ -5,9 +5,21 @@ import {EditableSpan} from './EditableSpan';
 import {TaskType} from './AppWithRedux';
 
 type TaskPropsType = {
+    /**
+     * task with title and status
+     */
     task: TaskType
+    /**
+     * remove task handler
+     */
     removeTask: (taskId: string) => void
+    /**
+     * change task status handler
+     */
     changeStatus: (taskId: string, isDone: boolean) => void
+    /**
+     * change task title handler
+     */
     changeTaskTitle: (taskId: string, newTitle: string) => void
 }
 
