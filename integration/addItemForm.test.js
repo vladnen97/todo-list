@@ -13,3 +13,5 @@ describe('addItemForm', () => {
         expect(image).toMatchImageSnapshot()
     });
 });
+
+//yarn jest:integration --updateSnapshot
