@@ -97,7 +97,7 @@ const UpdateC = () => {
     const [state, setState] = useState<any>(null)
 
     const onclickHandler = () => {
-        tasksAPI.updateTask(todoId, taskId, title).then(res => setState(res.data))
+        tasksAPI.updateTask(todoId, taskId, {title}).then(res => setState(res.data))
     }
 
     return (
