@@ -3,7 +3,7 @@ import {instance, ResponseType} from './index';
 type TodolistType = {
     id: string
     title: string
-    addedDate: string
+    addedDate: Date
     order: number
 }
 

@@ -9,14 +9,7 @@ const meta: Meta = {
 
 export default meta
 type Story = StoryObj
-type TaskModelType = {
-    title: string
-    description: string
-    status: number
-    priority: number
-    startDate: string
-    deadline: string
-}
+
 
 const GetC = () => {
     const [state, setState] = useState<any>([])
@@ -103,17 +96,8 @@ const UpdateC = () => {
     const [title, setTitle] = useState('')
     const [state, setState] = useState<any>(null)
 
-    const taskModel: TaskModelType = {
-        title: title,
-        deadline: '',
-        status: 0,
-        description: '',
-        priority: 1,
-        startDate: ''
-    }
-
     const onclickHandler = () => {
-        tasksAPI.updateTask(todoId, taskId, taskModel).then(res => setState(res.data))
+        tasksAPI.updateTask(todoId, taskId, title).then(res => setState(res.data))
     }
 
     return (
