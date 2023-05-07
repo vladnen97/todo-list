@@ -2,7 +2,8 @@ import React, {ChangeEvent, memo, useCallback} from 'react';
 import {Checkbox, IconButton} from '@mui/material';
 import {DisabledByDefaultOutlined} from '@mui/icons-material';
 import {EditableSpan} from './EditableSpan';
-import {TaskType} from './AppWithRedux';
+import {TaskType} from './store/tasks-reducer';
+import {TaskStatuses} from './api/tasks-api';
 
 type TaskPropsType = {
     /**
@@ -19,7 +20,7 @@ type TaskPropsType = {
      * @param taskId task id
      * @param isDone new task status
      */
-    changeStatus: (taskId: string, isDone: boolean) => void
+    changeStatus: (taskId: string, status: TaskStatuses) => void
     /**
      * change task title handler
      * @param taskId task id
@@ -29,17 +30,16 @@ type TaskPropsType = {
 }
 
 export const Task = memo((props: TaskPropsType) => {
-
     const onClickHandler = () => props.removeTask(props.task.id)
-    const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => props.changeStatus(props.task.id, e.currentTarget.checked)
+    const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => props.changeStatus(props.task.id, e.currentTarget.checked ? TaskStatuses.Completed: TaskStatuses.New)
     const onChangeTaskTitleHandler = useCallback((value: string) => {props.changeTaskTitle(props.task.id, value)}, [props.changeTaskTitle, props.task.id])
 
     return (
-        <li className={props.task.isDone ? 'is-done' : ''} >
+        <li className={props.task.status === TaskStatuses.Completed ? 'is-done' : ''} >
             <IconButton  aria-label="remove" size="small" onClick={onClickHandler}>
                 <DisabledByDefaultOutlined fontSize="medium"/>
             </IconButton>
-            <Checkbox checked={props.task.isDone}
+            <Checkbox checked={props.task.status === TaskStatuses.Completed}
                       onChange={onChangeStatusHandler}
                       size={'medium'}/>
             <EditableSpan title={props.task.title} onChange={onChangeTaskTitleHandler}/>
