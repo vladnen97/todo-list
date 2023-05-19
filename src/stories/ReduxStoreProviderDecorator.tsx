@@ -2,9 +2,9 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import {combineReducers, legacy_createStore} from 'redux'
 import { v1 } from 'uuid'
-import {RootStateType} from './store';
-import {tasksReducer} from './tasks-reducer';
-import {todolistsReducer} from './todolists-reducer';
+import {RootStateType} from '../store/store';
+import {tasksReducer} from '../store/tasks-reducer';
+import {todolistsReducer} from '../store/todolists-reducer';
 import {TaskStatuses} from '../api/tasks-api';
 
 

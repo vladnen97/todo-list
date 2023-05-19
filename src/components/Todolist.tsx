@@ -4,9 +4,9 @@ import {EditableSpan} from './EditableSpan';
 import {Button, ButtonGroup, IconButton} from '@mui/material';
 import {Delete} from '@mui/icons-material';
 import {Task} from './Task';
-import {FilterValuesType} from './store/todolists-reducer';
-import {TaskType} from './store/tasks-reducer';
-import {TaskStatuses} from './api/tasks-api';
+import {FilterValuesType} from '../store/todolists-reducer';
+import {TaskType} from '../store/tasks-reducer';
+import {TaskStatuses} from '../api/tasks-api';
 
 type TodolistPropsType = {
     /**
