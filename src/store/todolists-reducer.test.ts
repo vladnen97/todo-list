@@ -3,7 +3,7 @@ import {
     addTodolistAC,
     changeTodolistFilterlistAC,
     changeTodolistTitleAC,
-    removeTodolistAC,
+    removeTodolistAC, setTodolistsAC,
     todolistsReducer, TodoListType
 } from './todolists-reducer';
 
@@ -54,4 +54,12 @@ test('current todolist filter should be changed', () => {
     expect(endState[0]).not.toBe(startState[0])
     expect(endState[1].filter).toBe('all')
     expect(endState[0].filter).toBe('active')
+})
+
+test('todolists should be set to the state', () => {
+
+    const action = setTodolistsAC(startState)
+    const endState = todolistsReducer([], action)
+
+    expect(endState).toEqual(startState)
 })
