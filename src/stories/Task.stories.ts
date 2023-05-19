@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/react';
-import {Task} from '../Task';
+import {Task} from '../components/Task';
 import {TaskPriorities, TaskStatuses} from '../api/tasks-api';
 
 
