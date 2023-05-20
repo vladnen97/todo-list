@@ -1,12 +1,15 @@
-import React, {memo, useCallback} from 'react';
+import React, {memo, useCallback, useEffect} from 'react';
 import {AddItemForm} from './AddItemForm';
 import {EditableSpan} from './EditableSpan';
 import {Button, ButtonGroup, IconButton} from '@mui/material';
 import {Delete} from '@mui/icons-material';
 import {Task} from './Task';
 import {FilterValuesType} from '../store/todolists-reducer';
-import {TaskType} from '../store/tasks-reducer';
+import {fetchTasks} from '../store/tasks-reducer';
 import {TaskStatuses} from '../api/tasks-api';
+import {AppDispatch} from '../store/store';
+import {useDispatch} from 'react-redux';
+import {TaskResponseType} from '../api/tasks-api';
 
 type TodolistPropsType = {
     /**
@@ -20,7 +23,7 @@ type TodolistPropsType = {
     /**
      * current todolist tasks
      */
-    tasks: Array<TaskType>
+    tasks: Array<TaskResponseType>
     /**
      * current todolist filter status
      */
@@ -71,6 +74,11 @@ type TodolistPropsType = {
 }
 
 export const Todolist = memo((props: TodolistPropsType) => {
+    const dispatch: AppDispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(fetchTasks(props.id))
+    }, [])
 
     let tasks = props.tasks
 

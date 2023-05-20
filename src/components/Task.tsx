@@ -2,14 +2,14 @@ import React, {ChangeEvent, memo, useCallback} from 'react';
 import {Checkbox, IconButton} from '@mui/material';
 import {DisabledByDefaultOutlined} from '@mui/icons-material';
 import {EditableSpan} from './EditableSpan';
-import {TaskType} from '../store/tasks-reducer';
 import {TaskStatuses} from '../api/tasks-api';
+import {TaskResponseType} from '../api/tasks-api';
 
 type TaskPropsType = {
     /**
      * task with title and status
      */
-    task: TaskType
+    task: TaskResponseType
     /**
      * remove task handler
      * @param taskId task id
