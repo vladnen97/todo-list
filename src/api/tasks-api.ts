@@ -26,13 +26,13 @@ export enum TaskPriorities {
     Later,
 }
 
-type TaskModelType = {
-    title: string
+export type TaskModelType = {
+    title?: string
     description?: string
-    status?: number
-    priority?: number
-    startDate?: Date
-    deadline?: Date
+    status?: TaskStatuses
+    priority?: TaskPriorities
+    startDate?: string
+    deadline?: string
 }
 type GetTasksResponseType = {
     error: string
