@@ -59,15 +59,10 @@ export const tasksReducer = (state = initState, action: TasksActionsType): Tasks
 }
 
 export const setTasksAC = (todolistId: string, tasks: Array<TaskResponseType>) => ({type: 'SET-TASKS', tasks, todolistId} as const)
-export const removeTaskAC = (todolistId: string, taskId: string) => {
-    return {type: 'REMOVE-TASK', todolistId, taskId} as const
-}
-export const addTaskAC = (task: TaskResponseType) => {
-    return {type: 'ADD-TASK', task} as const
-}
-export const updateTaskAC = (task: TaskResponseType) => {
-    return {type: 'UPDATE-TASK', task} as const
-}
+export const removeTaskAC = (todolistId: string, taskId: string) => ({type: 'REMOVE-TASK', todolistId, taskId} as const)
+export const addTaskAC = (task: TaskResponseType) => ({type: 'ADD-TASK', task} as const)
+export const updateTaskAC = (task: TaskResponseType) => ({type: 'UPDATE-TASK', task} as const)
+
 
 //thunks
 export const fetchTasks = (todolistId: string): AppThunk => dispatch => {
