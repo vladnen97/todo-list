@@ -16,16 +16,17 @@ import {
 import {
     createTask, deleteTask, TasksType, updateTask
 } from './store/tasks-reducer';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppDispatch, RootStateType} from './store/store';
+import {useSelector} from 'react-redux';
+import {RootStateType} from './store/store';
 import {TaskStatuses} from './api/tasks-api';
+import {useAppDispatch} from './hooks/hooks';
 
 
 export function App() {
     const todolists = useSelector<RootStateType, Array<TodoListType>>((state) => state.todolists)
     const tasks = useSelector<RootStateType, TasksType>((state) => state.tasks)
 
-    const dispatch: AppDispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
         dispatch(fetchTodolists())
