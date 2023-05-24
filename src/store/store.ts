@@ -13,7 +13,7 @@ const RootState = combineReducers(
 
 export type RootStateType = ReturnType<typeof RootState>
 type AppActionTypes = TodolistsActionsType | TasksActionsType
-export type AppDispatch = ThunkDispatch<RootStateType, unknown, AppActionTypes>
+export type AppDispatchType = ThunkDispatch<RootStateType, unknown, AppActionTypes>
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootStateType, unknown, AppActionTypes>
 
 export const store: Store<RootStateType, AppActionTypes> = legacy_createStore(RootState, applyMiddleware(thunk))
