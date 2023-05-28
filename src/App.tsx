@@ -2,7 +2,7 @@ import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import {Todolist} from './components/Todolist';
 import {AddItemForm} from './components/AddItemForm';
-import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@mui/material';
+import {AppBar, Button, Container, Grid, IconButton, LinearProgress, Paper, Toolbar, Typography} from '@mui/material';
 import {Menu} from '@mui/icons-material';
 import {
     changeTodolistFilterlistAC,
@@ -20,6 +20,7 @@ import {useSelector} from 'react-redux';
 import {RootStateType} from './store/store';
 import {TaskStatuses} from './api/tasks-api';
 import {useAppDispatch} from './hooks/hooks';
+import {ErrorSnackBar} from './components/ErrorSnackBar';
 
 
 export function App() {
@@ -52,7 +53,6 @@ export function App() {
     const removeTask = useCallback((todolistID: string, taskId: string): void => {
         dispatch(deleteTask(todolistID, taskId))
     }, [])
-
     const changeStatus = useCallback((todolistID: string, taskId: string, status: TaskStatuses): void => {
         dispatch(updateTask(todolistID, taskId, {status}))
     }, [])
@@ -79,8 +79,8 @@ export function App() {
                     </Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
+                <LinearProgress />
             </AppBar>
-
             <Container>
                 <Grid container spacing={4} style={{paddingTop: '30px'}}>
                     <Grid item xs={12}>
@@ -109,6 +109,7 @@ export function App() {
                     }
                 </Grid>
             </Container>
+            <ErrorSnackBar/>
         </div>
     );
 }
