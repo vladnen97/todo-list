@@ -1,11 +1,10 @@
 type InitStateType = typeof initState
-export type AppActionsType =
-    ReturnType<typeof setStatus>
-    | ReturnType<typeof setError>
+export type StatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
+export type AppActionsType = ReturnType<typeof setAppStatus> | ReturnType<typeof setAppError>
 
 
 const initState = {
-    status: 'idle' as 'idle' | 'loading' | 'succeeded' | 'failed',
+    status: 'idle' as StatusType,
     error: null as string | null
 }
 
@@ -24,8 +23,8 @@ export const appReducer = (state: InitStateType = initState, action: AppActionsT
 }
 
 //action creators
-const setStatus = (status: 'idle' | 'loading' | 'succeeded' | 'failed') => ({type: 'APP/SET-STATUS', status} as const)
-const setError = (error: string) => ({type: 'APP/SET-ERROR', error} as const)
+export const setAppStatus = (status: StatusType) => ({type: 'APP/SET-STATUS', status} as const)
+export const setAppError = (error: string | null) => ({type: 'APP/SET-ERROR', error} as const)
 //thunk creators
 
 
