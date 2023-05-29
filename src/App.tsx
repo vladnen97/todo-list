@@ -10,7 +10,7 @@ import {
     fetchTodolists,
     FilterValuesType,
     removeTodolist,
-    TodoListType,
+    TodolistType,
     updateTodolist,
 } from './store/todolists-reducer';
 import {
@@ -21,11 +21,13 @@ import {RootStateType} from './store/store';
 import {TaskStatuses} from './api/tasks-api';
 import {useAppDispatch} from './hooks/hooks';
 import {ErrorSnackBar} from './components/ErrorSnackBar';
+import {StatusType} from './store/app-reducer';
 
 
 export function App() {
-    const todolists = useSelector<RootStateType, Array<TodoListType>>((state) => state.todolists)
+    const todolists = useSelector<RootStateType, Array<TodolistType>>((state) => state.todolists)
     const tasks = useSelector<RootStateType, TasksType>((state) => state.tasks)
+    const status = useSelector<RootStateType, StatusType>(state => state.app.status)
 
     const dispatch = useAppDispatch()
 
@@ -79,7 +81,7 @@ export function App() {
                     </Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
-                <LinearProgress />
+                {status === 'loading' && <LinearProgress/>}
             </AppBar>
             <Container>
                 <Grid container spacing={4} style={{paddingTop: '30px'}}>
@@ -90,14 +92,12 @@ export function App() {
                         todolists.map(el => (
                                 <Grid item key={el.id}>
                                     <Paper elevation={2} style={{padding: '15px'}}>
-                                        <Todolist id={el.id}
-                                                  title={el.title}
+                                        <Todolist todolist={el}
                                                   tasks={tasks[el.id]}
                                                   removeTask={removeTask}
                                                   changeFilter={changeFilter}
                                                   addTask={addTask}
                                                   changeStatus={changeStatus}
-                                                  filter={el.filter}
                                                   deleteTodolist={deleteTodolist}
                                                   changeTaskTitle={changeTaskTitle}
                                                   changeTodolistTitle={changeTodolistTitle}
