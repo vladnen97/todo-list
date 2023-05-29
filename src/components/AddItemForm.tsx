@@ -7,16 +7,17 @@ export type AddItemFormPropsType = {
      * @param title title
      */
     addItem: (title: string) => void
+    disabled?: boolean
 }
 
-export const AddItemForm = memo((props: AddItemFormPropsType) => {
+export const AddItemForm = memo(({addItem, disabled = false}: AddItemFormPropsType) => {
     const [title, setTitle] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
 
-    const addItem = () => {
+    const addItemHandler = () => {
         const trimmedTitle = title.trim()
         if (trimmedTitle) {
-            props.addItem(trimmedTitle);
+            addItem(trimmedTitle);
             setTitle('');
         } else {
             setTitle('');
@@ -29,7 +30,7 @@ export const AddItemForm = memo((props: AddItemFormPropsType) => {
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         error && setError(null)
         if (e.key === 'Enter') {
-            addItem();
+            addItemHandler();
         }
     };
 
@@ -37,6 +38,7 @@ export const AddItemForm = memo((props: AddItemFormPropsType) => {
     return (
         <div>
             <TextField
+                disabled={disabled}
                 error={!!error}
                 size={'small'}
                 label='Type value'
@@ -45,10 +47,11 @@ export const AddItemForm = memo((props: AddItemFormPropsType) => {
                 onKeyDown={onKeyPressHandler}
                 helperText={error}
             />
-            <Button onClick={addItem}
+            <Button onClick={addItemHandler}
                     color="inherit"
                     size="medium"
-                    variant="contained">
+                    variant="contained"
+                    disabled={disabled}>
                 +
             </Button>
         </div>
