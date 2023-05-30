@@ -1,6 +1,7 @@
 import {TodolistResponseType, todolistsAPI} from '../api/todolists-api';
 import {AppThunk} from './store';
 import {setAppStatus, StatusType} from './app-reducer';
+import {handleServerAppError, handleServerNetworkError} from '../utils/error-utils';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 export type TodolistType = TodolistResponseType & { filter: FilterValuesType, entityStatus: StatusType }
@@ -58,18 +59,34 @@ export const removeTodolist = (todolistId: string): AppThunk => dispatch => {
     dispatch(setAppStatus('loading'))
     dispatch(changeTodolistEntityStatus(todolistId, 'loading'))
     todolistsAPI.deleteTodolist(todolistId).then(res => {
-        dispatch(removeTodolistAC(todolistId))
-        dispatch(setAppStatus('succeeded'))
-    })
+        if (res.data.resultCode === 0) {
+            dispatch(removeTodolistAC(todolistId))
+            dispatch(setAppStatus('succeeded'))
+        } else {
+            handleServerAppError(dispatch, res.data)
+            dispatch(changeTodolistEntityStatus(todolistId, 'failed'))
+        }
+    }).catch(err => handleServerNetworkError(dispatch, err))
 }
 export const createTodolist = (title: string): AppThunk => dispatch => {
     dispatch(setAppStatus('loading'))
     todolistsAPI.createTodolist(title).then(res => {
-        dispatch(addTodolistAC(res.data.data.item))
-        dispatch(setAppStatus('succeeded'))
+        if (res.data.resultCode === 0) {
+            dispatch(addTodolistAC(res.data.data.item))
+            dispatch(setAppStatus('succeeded'))
+        } else {
+            handleServerAppError(dispatch, res.data)
+        }
+    }).catch(err => {
+        handleServerNetworkError(dispatch, err)
     })
 }
 export const updateTodolist = (todolistId: string, title: string): AppThunk => dispatch => {
-    todolistsAPI.updateTodolist(todolistId, title).then(res => dispatch(changeTodolistTitleAC(todolistId, title)))
+    todolistsAPI.updateTodolist(todolistId, title)
+        .then(res => {
+            if (res.data.resultCode === 0) dispatch(changeTodolistTitleAC(todolistId, title))
+            else handleServerAppError(dispatch, res.data)
+        })
+        .catch(err => handleServerNetworkError(dispatch, err))
 }
 

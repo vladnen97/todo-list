@@ -1,7 +1,8 @@
 import {addTodolistAC, removeTodolistAC, setTodolistsAC} from './todolists-reducer';
 import {TaskModelType, TaskResponseType, tasksAPI} from '../api/tasks-api';
 import {AppThunk} from './store';
-import {setAppError, setAppStatus} from './app-reducer';
+import {setAppStatus} from './app-reducer';
+import {handleServerAppError, handleServerNetworkError} from '../utils/error-utils';
 
 
 export type TasksType = {
@@ -59,6 +60,8 @@ export const tasksReducer = (state = initState, action: TasksActionsType): Tasks
     }
 }
 
+
+// actions
 export const setTasksAC = (todolistId: string, tasks: Array<TaskResponseType>) => ({
     type: 'SET-TASKS',
     tasks,
@@ -79,7 +82,15 @@ export const fetchTasks = (todolistId: string): AppThunk => dispatch => {
     })
 }
 export const deleteTask = (todolistId: string, taskId: string): AppThunk => dispatch => {
-    tasksAPI.deleteTask(todolistId, taskId).then(res => dispatch(removeTaskAC(todolistId, taskId)))
+    tasksAPI.deleteTask(todolistId, taskId)
+        .then(res => {
+            if (res.data.resultCode === 0) {
+                dispatch(removeTaskAC(todolistId, taskId))
+            } else {
+                handleServerAppError(dispatch, res.data)
+            }
+        })
+        .catch(err => handleServerNetworkError(dispatch, err))
 }
 export const createTask = (todolistId: string, title: string): AppThunk => dispatch => {
     dispatch(setAppStatus('loading'))
@@ -89,12 +100,11 @@ export const createTask = (todolistId: string, title: string): AppThunk => dispa
                 dispatch(addTaskAC(res.data.data.item))
                 dispatch(setAppStatus('succeeded'))
             } else {
-                dispatch(setAppError(res.data.messages[0]))
-                dispatch(setAppStatus('failed'))
+                handleServerAppError(dispatch, res.data)
             }
         })
-        .catch(error => {
-
+        .catch(err => {
+            handleServerNetworkError(dispatch, err)
         })
 
 }
@@ -105,7 +115,7 @@ export const updateTask = (todolistId: string, taskId: string, taskModel: TaskMo
         console.warn('task not found')
         return
     }
-    console.log(taskModel.status)
+
     const model: TaskModelType = {
         title: task.title,
         status: task.status,
@@ -116,5 +126,15 @@ export const updateTask = (todolistId: string, taskId: string, taskModel: TaskMo
         ...taskModel
     }
 
-    tasksAPI.updateTask(todolistId, taskId, model).then(res => dispatch(updateTaskAC(res.data.data.item)))
+    tasksAPI.updateTask(todolistId, taskId, model)
+        .then(res => {
+            if (res.data.resultCode === 0) {
+                dispatch(updateTaskAC(res.data.data.item))
+            } else {
+                handleServerAppError(dispatch, res.data)
+            }
+        }).catch(err => {
+            handleServerNetworkError(dispatch, err)
+        }
+    )
 }
