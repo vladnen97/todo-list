@@ -1,14 +1,16 @@
-import {appReducer, setAppError, setAppStatus, StatusType} from '../app-reducer';
+import {appReducer, setAppError, setAppStatus, setIsInitialized, StatusType} from '../app-reducer';
 
 let startState: {
     status: StatusType
     error: string | null
+    isInitialized: boolean
 }
 
 beforeEach(() => {
     startState = {
         status: 'idle',
-        error: null
+        error: null,
+        isInitialized: false
     }
 })
 
@@ -25,4 +27,11 @@ test('status should be set', () => {
 
     expect(endState.status).toBe('succeeded')
     expect(endState.error).toBe(null)
+})
+
+test('app should be initialized', () => {
+
+    const endState = appReducer(startState, setIsInitialized(true))
+
+    expect(endState.isInitialized).toBeTruthy()
 })
