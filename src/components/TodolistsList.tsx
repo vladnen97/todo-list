@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect} from 'react';
 import {
-    changeTodolistFilterlistAC,
+    changeTodolistFilterlistAC, clearData,
     createTodolist,
     fetchTodolists,
     FilterValuesType,
@@ -25,6 +25,10 @@ export const TodolistsList = () => {
     useEffect(() => {
         if (!isLoggedIn) return
         dispatch(fetchTodolists())
+
+        return () => {
+            dispatch(clearData())
+        }
     }, [])
 
 
