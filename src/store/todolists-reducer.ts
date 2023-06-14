@@ -13,6 +13,7 @@ export type TodolistsActionsType =
     | ReturnType<typeof changeTodolistFilterlistAC>
     | ReturnType<typeof setTodolistsAC>
     | ReturnType<typeof changeTodolistEntityStatus>
+    | ReturnType<typeof clearData>
 
 const initState: Array<TodolistType> = []
 
@@ -31,6 +32,8 @@ export const todolistsReducer = (state = initState, action: TodolistsActionsType
             return state.map(el => el.id === action.todolistId ? {...el, filter: action.newFilter} : el)
         case 'CHANGE-TODOLIST-ENTITY-STATUS':
             return state.map(el => el.id === action.todolistId ? {...el, entityStatus: action.entityStatus} : el)
+        case 'CLEAR-DATA':
+            return []
 
         default:
             return state
@@ -46,6 +49,7 @@ export const changeTodolistFilterlistAC = (todolistId: string, newFilter: Filter
     ({type: 'CHANGE-TODOLIST-FILTER', todolistId, newFilter} as const)
 export const changeTodolistEntityStatus = (todolistId: string, entityStatus: StatusType) =>
     ({type: 'CHANGE-TODOLIST-ENTITY-STATUS', entityStatus, todolistId} as const)
+export const clearData = () => ({type: 'CLEAR-DATA'} as const)
 
 //thunk creators
 export const fetchTodolists = (): AppThunk => (dispatch) => {
@@ -53,6 +57,8 @@ export const fetchTodolists = (): AppThunk => (dispatch) => {
     todolistsAPI.getTodolists().then(res => {
         dispatch(setTodolistsAC(res.data))
         dispatch(setAppStatus('succeeded'))
+    }).catch(err => {
+        handleServerNetworkError(dispatch, err)
     })
 }
 export const removeTodolist = (todolistId: string): AppThunk => dispatch => {

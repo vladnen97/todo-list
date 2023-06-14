@@ -1,4 +1,4 @@
-import {addTodolistAC, removeTodolistAC, setTodolistsAC} from './todolists-reducer';
+import {addTodolistAC, clearData, removeTodolistAC, setTodolistsAC} from './todolists-reducer';
 import {TaskModelType, TaskResponseType, tasksAPI} from '../api/tasks-api';
 import {AppThunk} from './store';
 import {setAppStatus} from './app-reducer';
@@ -17,6 +17,7 @@ export type TasksActionsType =
     | ReturnType<typeof addTodolistAC>
     | ReturnType<typeof setTodolistsAC>
     | ReturnType<typeof setTasksAC>
+    | ReturnType<typeof clearData>
 
 const initState: TasksType = {}
 
@@ -54,7 +55,8 @@ export const tasksReducer = (state = initState, action: TasksActionsType): Tasks
                 ...state,
                 [action.task.todoListId]: state[action.task.todoListId].map(el => el.id === action.task.id ? {...action.task} : el)
             }
-
+        case 'CLEAR-DATA':
+            return {}
         default:
             return state
     }
@@ -63,10 +65,7 @@ export const tasksReducer = (state = initState, action: TasksActionsType): Tasks
 
 // actions
 export const setTasksAC = (todolistId: string, tasks: Array<TaskResponseType>) => ({
-    type: 'SET-TASKS',
-    tasks,
-    todolistId
-} as const)
+    type: 'SET-TASKS', tasks, todolistId} as const)
 export const removeTaskAC = (todolistId: string, taskId: string) => ({type: 'REMOVE-TASK', todolistId, taskId} as const)
 export const addTaskAC = (task: TaskResponseType) => ({type: 'ADD-TASK', task} as const)
 export const updateTaskAC = (task: TaskResponseType) => ({type: 'UPDATE-TASK', task} as const)
