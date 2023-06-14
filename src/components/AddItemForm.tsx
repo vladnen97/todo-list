@@ -36,7 +36,7 @@ export const AddItemForm = memo(({addItem, disabled = false}: AddItemFormPropsTy
 
 
     return (
-        <div>
+        <div style={ {display: 'flex', gap: '6px', alignItems: 'flex-start'} }>
             <TextField
                 disabled={disabled}
                 error={!!error}
@@ -51,7 +51,8 @@ export const AddItemForm = memo(({addItem, disabled = false}: AddItemFormPropsTy
                     color="inherit"
                     size="medium"
                     variant="contained"
-                    disabled={disabled}>
+                    disabled={disabled}
+                    disableElevation>
                 +
             </Button>
         </div>
