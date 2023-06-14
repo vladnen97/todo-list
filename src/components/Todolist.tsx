@@ -112,21 +112,18 @@ export const Todolist = memo((props: TodolistPropsType) => {
         <ButtonGroup>
             <Button onClick={() => filterHandler('all')}
                     color={props.todolist.filter === 'all' ? 'primary' : 'inherit'}
-                    disabled={false}
                     size="small"
                     variant="contained">
                 All
             </Button>
             <Button onClick={() => filterHandler('active')}
                     color={props.todolist.filter === 'active' ? 'primary' : 'inherit'}
-                    disabled={false}
                     size="small"
                     variant="contained">
                 Active
             </Button>
             <Button onClick={() => filterHandler('completed')}
                     color={props.todolist.filter === 'completed' ? 'primary' : 'inherit'}
-                    disabled={false}
                     size="small"
                     variant="contained">
                 Completed
