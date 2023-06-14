@@ -1,114 +1,55 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
-import {Todolist} from './components/Todolist';
-import {AddItemForm} from './components/AddItemForm';
-import {AppBar, Button, Container, Grid, IconButton, LinearProgress, Paper, Toolbar, Typography} from '@mui/material';
-import {Menu} from '@mui/icons-material';
-import {
-    changeTodolistFilterlistAC,
-    createTodolist,
-    fetchTodolists,
-    FilterValuesType,
-    removeTodolist,
-    TodolistType,
-    updateTodolist,
-} from './store/todolists-reducer';
-import {
-    createTask, deleteTask, TasksType, updateTask
-} from './store/tasks-reducer';
-import {useSelector} from 'react-redux';
-import {RootStateType} from './store/store';
-import {TaskStatuses} from './api/tasks-api';
-import {useAppDispatch} from './hooks/hooks';
+import {AppBar, Button, CircularProgress, Container, LinearProgress, Toolbar, Typography} from '@mui/material';
 import {ErrorSnackBar} from './components/ErrorSnackBar';
-import {StatusType} from './store/app-reducer';
+import {Navigate, Route, Routes} from 'react-router-dom';
+import {Login} from './components/Login';
+import {TodolistsList} from './components/TodolistsList';
+import {useAppDispatch, useAppSelector} from './hooks/hooks';
+import {initializeAppTC} from './store/app-reducer';
+import {logoutTC} from './store/auth-reducer';
 
 
 export function App() {
-    const todolists = useSelector<RootStateType, Array<TodolistType>>((state) => state.todolists)
-    const tasks = useSelector<RootStateType, TasksType>((state) => state.tasks)
-    const status = useSelector<RootStateType, StatusType>(state => state.app.status)
-
+    const status = useAppSelector(state => state.app.status)
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+    const isInitialized = useAppSelector(state => state.app.isInitialized)
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        dispatch(fetchTodolists())
-    }, [])
-
-    const addTodolist = useCallback((title: string) => {
-        dispatch(createTodolist(title))
-    }, [])
-    const deleteTodolist = useCallback((todolistId: string): void => {
-        dispatch(removeTodolist(todolistId))
-    }, [])
-    const changeTodolistTitle = useCallback((todolistID: string, newTitle: string) => {
-        dispatch(updateTodolist(todolistID, newTitle))
-    }, [])
-    const changeFilter = useCallback((todolistID: string, value: FilterValuesType): void => {
-        dispatch(changeTodolistFilterlistAC(todolistID, value))
+        dispatch(initializeAppTC())
     }, [])
 
 
-    const addTask = useCallback((todolistID: string, title: string): void => {
-        dispatch(createTask(todolistID, title))
-    }, [])
-    const removeTask = useCallback((todolistID: string, taskId: string): void => {
-        dispatch(deleteTask(todolistID, taskId))
-    }, [])
-    const changeStatus = useCallback((todolistID: string, taskId: string, status: TaskStatuses): void => {
-        dispatch(updateTask(todolistID, taskId, {status}))
-    }, [])
-    const changeTaskTitle = useCallback((todolistID: string, taskId: string, title: string) => {
-        dispatch(updateTask(todolistID, taskId, {title}))
-    }, [])
-
+    if (!isInitialized) {
+        return <div
+            style={{position: 'fixed', top: '40%', textAlign: 'center', width: '100%'}}>
+            <CircularProgress/>
+        </div>
+    }
 
     return (
         <div className="App">
             <AppBar position="static">
                 <Toolbar>
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="menu"
-                        sx={{mr: 2}}
-                    >
-                        <Menu/>
-                    </IconButton>
                     <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                         ToDoList
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    {isLoggedIn && <Button color="inherit" onClick={() => {dispatch(logoutTC())}}>Logout</Button>}
                 </Toolbar>
                 {status === 'loading' && <LinearProgress/>}
             </AppBar>
-            <Container>
-                <Grid container spacing={4} style={{paddingTop: '30px'}}>
-                    <Grid item xs={12}>
-                        <AddItemForm addItem={addTodolist}/>
-                    </Grid>
-                    {
-                        todolists.map(el => (
-                                <Grid item key={el.id}>
-                                    <Paper elevation={2} style={{padding: '15px'}}>
-                                        <Todolist todolist={el}
-                                                  tasks={tasks[el.id]}
-                                                  removeTask={removeTask}
-                                                  changeFilter={changeFilter}
-                                                  addTask={addTask}
-                                                  changeStatus={changeStatus}
-                                                  deleteTodolist={deleteTodolist}
-                                                  changeTaskTitle={changeTaskTitle}
-                                                  changeTodolistTitle={changeTodolistTitle}
-                                        />
-                                    </Paper>
-                                </Grid>
-                            )
-                        )
-                    }
-                </Grid>
+
+            <Container fixed>
+                <Routes>
+                    <Route path={'/'} element={<TodolistsList/>}/>
+                    <Route path={'/login'} element={<Login/>}/>
+
+                    <Route path={'/404'} element={<h1>404: PAGE NOT FOUND</h1>}/>
+                    <Route path={'*'} element={<Navigate to={'/404'}/>}/>
+                </Routes>
             </Container>
+
             <ErrorSnackBar/>
         </div>
     );
