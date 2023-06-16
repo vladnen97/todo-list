@@ -33,11 +33,17 @@ export function App() {
             <AppBar position="static">
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                        ToDoList
+                        TodoList
                     </Typography>
-                    {isLoggedIn && <Button color="inherit" onClick={() => {dispatch(logoutTC())}}>Logout</Button>}
+                    {isLoggedIn && <Button color="inherit" onClick={() => {
+                        dispatch(logoutTC())
+                    }}>Logout</Button>}
                 </Toolbar>
-                {status === 'loading' && <LinearProgress/>}
+                <div style={{height: '4px'}}>
+                    {status === 'loading' &&
+                        <LinearProgress/>
+                    }
+                </div>
             </AppBar>
 
             <Container fixed>
