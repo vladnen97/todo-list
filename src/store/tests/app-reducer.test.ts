@@ -1,7 +1,7 @@
-import {appReducer, setAppError, setAppStatus, setIsInitialized, StatusType} from '../app-reducer';
+import {appReducer, setAppError, setAppStatus, setIsInitialized, RequestStatusType} from '../app-reducer';
 
 let startState: {
-    status: StatusType
+    status: RequestStatusType
     error: string | null
     isInitialized: boolean
 }

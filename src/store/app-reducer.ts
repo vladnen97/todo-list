@@ -4,7 +4,7 @@ import {setIsLoggedInAC} from './auth-reducer';
 import {handleServerAppError, handleServerNetworkError} from '../utils/error-utils';
 
 type InitStateType = typeof initState
-export type StatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
+export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 export type AppActionsType =
     ReturnType<typeof setAppStatus>
     | ReturnType<typeof setAppError>
@@ -12,7 +12,7 @@ export type AppActionsType =
 
 
 const initState = {
-    status: 'idle' as StatusType,
+    status: 'idle' as RequestStatusType,
     error: null as string | null,
     isInitialized: false
 }
@@ -34,7 +34,7 @@ export const appReducer = (state: InitStateType = initState, action: AppActionsT
 }
 
 //action
-export const setAppStatus = (status: StatusType) => ({type: 'APP/SET-STATUS', status} as const)
+export const setAppStatus = (status: RequestStatusType) => ({type: 'APP/SET-STATUS', status} as const)
 export const setAppError = (error: string | null) => ({type: 'APP/SET-ERROR', error} as const)
 export const setIsInitialized = (value: boolean) => ({type: 'APP/SET-INITIALIZED', value} as const)
 

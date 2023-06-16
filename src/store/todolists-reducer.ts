@@ -1,10 +1,10 @@
 import {TodolistResponseType, todolistsAPI} from '../api/todolists-api';
 import {AppThunk} from './store';
-import {setAppStatus, StatusType} from './app-reducer';
+import {setAppStatus, RequestStatusType} from './app-reducer';
 import {handleServerAppError, handleServerNetworkError} from '../utils/error-utils';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
-export type TodolistType = TodolistResponseType & { filter: FilterValuesType, entityStatus: StatusType }
+export type TodolistType = TodolistResponseType & { filter: FilterValuesType, entityStatus: RequestStatusType }
 
 export type TodolistsActionsType =
     ReturnType<typeof removeTodolistAC>
@@ -47,7 +47,7 @@ export const changeTodolistTitleAC = (todolistId: string, newTitle: string) =>
     ({type: 'CHANGE-TODOLIST-TITLE', todolistId, newTitle} as const)
 export const changeTodolistFilterlistAC = (todolistId: string, newFilter: FilterValuesType) =>
     ({type: 'CHANGE-TODOLIST-FILTER', todolistId, newFilter} as const)
-export const changeTodolistEntityStatus = (todolistId: string, entityStatus: StatusType) =>
+export const changeTodolistEntityStatus = (todolistId: string, entityStatus: RequestStatusType) =>
     ({type: 'CHANGE-TODOLIST-ENTITY-STATUS', entityStatus, todolistId} as const)
 export const clearData = () => ({type: 'CLEAR-DATA'} as const)
 
@@ -88,9 +88,14 @@ export const createTodolist = (title: string): AppThunk => dispatch => {
     })
 }
 export const updateTodolist = (todolistId: string, title: string): AppThunk => dispatch => {
+    dispatch(setAppStatus('loading'))
+
     todolistsAPI.updateTodolist(todolistId, title)
         .then(res => {
-            if (res.data.resultCode === 0) dispatch(changeTodolistTitleAC(todolistId, title))
+            if (res.data.resultCode === 0) {
+                dispatch(changeTodolistTitleAC(todolistId, title))
+                dispatch(setAppStatus('succeeded'))
+            }
             else handleServerAppError(dispatch, res.data)
         })
         .catch(err => handleServerNetworkError(dispatch, err))
