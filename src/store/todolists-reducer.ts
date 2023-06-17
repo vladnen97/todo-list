@@ -2,6 +2,8 @@ import {TodolistResponseType, todolistsAPI} from '../api/todolists-api';
 import {AppThunk} from './store';
 import {setAppStatus, RequestStatusType} from './app-reducer';
 import {handleServerAppError, handleServerNetworkError} from '../utils/error-utils';
+import {AxiosError} from 'axios';
+import {fetchTasks} from './tasks-reducer';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 export type TodolistType = TodolistResponseType & { filter: FilterValuesType, entityStatus: RequestStatusType }
@@ -56,9 +58,13 @@ export const fetchTodolists = (): AppThunk => (dispatch) => {
     dispatch(setAppStatus('loading'))
     todolistsAPI.getTodolists().then(res => {
         dispatch(setTodolistsAC(res.data))
-        dispatch(setAppStatus('succeeded'))
-    }).catch(err => {
-        handleServerNetworkError(dispatch, err)
+        return res.data
+    }).then(todos => {
+        todos.forEach(el => {
+            dispatch(fetchTasks(el.id))
+        })
+    }).catch((e: AxiosError) => {
+        handleServerNetworkError(dispatch, e)
     })
 }
 export const removeTodolist = (todolistId: string): AppThunk => dispatch => {
@@ -72,8 +78,8 @@ export const removeTodolist = (todolistId: string): AppThunk => dispatch => {
             handleServerAppError(dispatch, res.data)
             dispatch(changeTodolistEntityStatus(todolistId, 'failed'))
         }
-    }).catch(err => {
-        handleServerNetworkError(dispatch, err)
+    }).catch((e: AxiosError) => {
+        handleServerNetworkError(dispatch, e)
         dispatch(changeTodolistEntityStatus(todolistId, 'failed'))
     })
 }
@@ -86,8 +92,8 @@ export const createTodolist = (title: string): AppThunk => dispatch => {
         } else {
             handleServerAppError(dispatch, res.data)
         }
-    }).catch(err => {
-        handleServerNetworkError(dispatch, err)
+    }).catch((e: AxiosError) => {
+        handleServerNetworkError(dispatch, e)
     })
 }
 export const updateTodolist = (todolistId: string, title: string): AppThunk => dispatch => {
@@ -100,6 +106,6 @@ export const updateTodolist = (todolistId: string, title: string): AppThunk => d
                 dispatch(setAppStatus('succeeded'))
             } else handleServerAppError(dispatch, res.data)
         })
-        .catch(err => handleServerNetworkError(dispatch, err))
+        .catch((e: AxiosError) => handleServerNetworkError(dispatch, e))
 }
 

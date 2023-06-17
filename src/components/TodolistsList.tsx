@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {memo, useCallback, useEffect} from 'react';
 import {
     changeTodolistFilterlistAC, clearData,
     createTodolist,
@@ -15,7 +15,7 @@ import {AddItemForm} from './AddItemForm';
 import {Todolist} from './Todolist';
 import {Navigate} from 'react-router-dom';
 
-export const TodolistsList = () => {
+export const TodolistsList = memo(() => {
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const todolists = useAppSelector(state => state.todolists)
     const tasks = useAppSelector(state => state.tasks)
@@ -30,7 +30,6 @@ export const TodolistsList = () => {
             dispatch(clearData())
         }
     }, [])
-
 
 
     const addTodolist = useCallback((title: string) => {
@@ -89,5 +88,5 @@ export const TodolistsList = () => {
                 }
             </Grid>
         </>
-}
+})
 
