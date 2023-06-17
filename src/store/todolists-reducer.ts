@@ -72,7 +72,10 @@ export const removeTodolist = (todolistId: string): AppThunk => dispatch => {
             handleServerAppError(dispatch, res.data)
             dispatch(changeTodolistEntityStatus(todolistId, 'failed'))
         }
-    }).catch(err => handleServerNetworkError(dispatch, err))
+    }).catch(err => {
+        handleServerNetworkError(dispatch, err)
+        dispatch(changeTodolistEntityStatus(todolistId, 'failed'))
+    })
 }
 export const createTodolist = (title: string): AppThunk => dispatch => {
     dispatch(setAppStatus('loading'))
@@ -95,8 +98,7 @@ export const updateTodolist = (todolistId: string, title: string): AppThunk => d
             if (res.data.resultCode === 0) {
                 dispatch(changeTodolistTitleAC(todolistId, title))
                 dispatch(setAppStatus('succeeded'))
-            }
-            else handleServerAppError(dispatch, res.data)
+            } else handleServerAppError(dispatch, res.data)
         })
         .catch(err => handleServerNetworkError(dispatch, err))
 }
