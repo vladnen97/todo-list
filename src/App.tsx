@@ -21,15 +21,14 @@ export function App() {
     }, [])
 
 
-    if (!isInitialized) {
-        return <div
+
+
+    return !isInitialized
+        ? <div
             style={{position: 'fixed', top: '40%', textAlign: 'center', width: '100%'}}>
             <CircularProgress/>
         </div>
-    }
-
-    return (
-        <div className="App">
+        : <div className="App">
             <AppBar position="static">
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
@@ -58,5 +57,4 @@ export function App() {
 
             <ErrorSnackBar/>
         </div>
-    );
 }

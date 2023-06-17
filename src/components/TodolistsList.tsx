@@ -60,12 +60,10 @@ export const TodolistsList = () => {
         dispatch(updateTask(todolistID, taskId, {title}))
     }, [])
 
-    if (!isLoggedIn) {
-        return <Navigate to={'/login'}/>
-    }
 
-    return (
-        <>
+    return !isLoggedIn
+        ? <Navigate to={'/login'}/>
+        : <>
             <Grid container style={{padding: '20px 0 40px 0'}}>
                 <AddItemForm addItem={addTodolist}/>
             </Grid>
@@ -91,6 +89,5 @@ export const TodolistsList = () => {
                 }
             </Grid>
         </>
-    )
 }
 
