@@ -1,24 +1,23 @@
-import {instance, ResponseType} from './index';
+import { instance, ResponseType } from "./index";
 
 export type TodolistResponseType = {
-    id: string
-    title: string
-    addedDate: string
-    order: number
-}
-
+    id: string;
+    title: string;
+    addedDate: string;
+    order: number;
+};
 
 export const todolistsAPI = {
     getTodolists() {
-        return instance.get<Array<TodolistResponseType>>(`/todo-lists`)
+        return instance.get<Array<TodolistResponseType>>(`/todo-lists`);
     },
     createTodolist(title: string) {
-        return instance.post<ResponseType<{ item: TodolistResponseType }>>('/todo-lists', {title})
+        return instance.post<ResponseType<{ item: TodolistResponseType }>>("/todo-lists", { title });
     },
     deleteTodolist(todolistId: string) {
-        return instance.delete<ResponseType>(`/todo-lists/${todolistId}`)
+        return instance.delete<ResponseType>(`/todo-lists/${todolistId}`);
     },
     updateTodolist(todolistId: string, title: string) {
-        return instance.put<ResponseType>(`/todo-lists/${todolistId}`, {title})
-    }
-}
+        return instance.put<ResponseType>(`/todo-lists/${todolistId}`, { title });
+    },
+};

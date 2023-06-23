@@ -1,9 +1,8 @@
 .is-done {
-  text-decoration: line-through;
+    text-decoration: line-through;
 }
 
 li {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
-
