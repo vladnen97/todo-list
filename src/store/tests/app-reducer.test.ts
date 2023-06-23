@@ -1,37 +1,34 @@
-import {appReducer, setAppError, setAppStatus, setIsInitialized, RequestStatusType} from '../app-reducer';
+import {appActions, appReducer, RequestStatusType} from '../app-reducer';
 
 let startState: {
-    status: RequestStatusType
-    error: string | null
-    isInitialized: boolean
-}
+    status: RequestStatusType;
+    error: string | null;
+    isInitialized: boolean;
+};
 
 beforeEach(() => {
     startState = {
-        status: 'idle',
+        status: "idle",
         error: null,
-        isInitialized: false
-    }
-})
+        isInitialized: false,
+    };
+});
 
-test('error should be set', () => {
+test("error should be set", () => {
+    const endState = appReducer(startState, appActions.setAppError({error: "some error"}));
 
-    const endState = appReducer(startState, setAppError('some error'))
+    expect(endState.error).toBe("some error");
+});
 
-    expect(endState.error).toBe('some error')
-})
+test("status should be set", () => {
+    const endState = appReducer(startState, appActions.setAppStatus({status: "succeeded"}));
 
-test('status should be set', () => {
+    expect(endState.status).toBe("succeeded");
+    expect(endState.error).toBe(null);
+});
 
-    const endState = appReducer(startState, setAppStatus('succeeded'))
+test("app should be initialized", () => {
+    const endState = appReducer(startState, appActions.setIsInitialized({isInitialized: true}));
 
-    expect(endState.status).toBe('succeeded')
-    expect(endState.error).toBe(null)
-})
-
-test('app should be initialized', () => {
-
-    const endState = appReducer(startState, setIsInitialized(true))
-
-    expect(endState.isInitialized).toBeTruthy()
-})
+    expect(endState.isInitialized).toBeTruthy();
+});
