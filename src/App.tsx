@@ -8,11 +8,13 @@ import { TodolistsList } from "./components/TodolistsList";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 import { initializeAppTC } from "./store/app-reducer";
 import { logoutTC } from "./store/auth-reducer";
+import {selectIsInitialized, selectStatus} from './utils/selectors/app.selectors';
+import {selectIsLoggedIn} from './utils/selectors/auth.selectors';
 
 export function App() {
-    const status = useAppSelector((state) => state.app.status);
-    const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
-    const isInitialized = useAppSelector((state) => state.app.isInitialized);
+    const status = useAppSelector(selectStatus);
+    const isLoggedIn = useAppSelector(selectIsLoggedIn);
+    const isInitialized = useAppSelector(selectIsInitialized);
     const dispatch = useAppDispatch();
 
     useEffect(() => {

@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import { loginTC } from "../store/auth-reducer";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { Navigate } from "react-router-dom";
+import {selectIsLoggedIn} from '../utils/selectors/auth.selectors';
 
 type FormikErrorType = {
     email?: string;
@@ -29,7 +30,7 @@ const validate = (values: FormikErrorType) => {
 };
 
 export const Login = () => {
-    const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+    const isLoggedIn = useAppSelector(selectIsLoggedIn);
     const dispatch = useAppDispatch();
     const formik = useFormik({
         initialValues: {

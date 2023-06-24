@@ -13,11 +13,14 @@ import { Grid, Paper } from "@mui/material";
 import { AddItemForm } from "./AddItemForm";
 import { Todolist } from "./Todolist";
 import { Navigate } from "react-router-dom";
+import {selectIsLoggedIn} from '../utils/selectors/auth.selectors';
+import {selectTodolists} from '../utils/selectors/todolists.selectors';
+import {selectTasks} from '../utils/selectors/tasks.selectors';
 
 export const TodolistsList = memo(() => {
-    const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
-    const todolists = useAppSelector((state) => state.todolists);
-    const tasks = useAppSelector((state) => state.tasks);
+    const isLoggedIn = useAppSelector(selectIsLoggedIn);
+    const todolists = useAppSelector(selectTodolists);
+    const tasks = useAppSelector(selectTasks);
 
     const dispatch = useAppDispatch();
 
