@@ -5,6 +5,7 @@ import { handleServerAppError, handleServerNetworkError } from "../utils/error-u
 import { AxiosError } from "axios";
 import { fetchTasks } from "./tasks-reducer";
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {clearData} from '../common/actions/common-actions';
 
 export type FilterValuesType = "all" | "active" | "completed";
 export type TodolistType = TodolistResponseType & { filter: FilterValuesType; entityStatus: RequestStatusType };
@@ -35,9 +36,11 @@ const todolistsSlice = createSlice({
             const todolistIndex = state.findIndex(el => el.id === action.payload.todolistId)
             state[todolistIndex].entityStatus = action.payload.entityStatus
         },
-        clearData: () => {
+    },
+    extraReducers: builder => {
+        builder.addCase(clearData.type, ()=> {
             return []
-        },
+        })
     }
 })
 

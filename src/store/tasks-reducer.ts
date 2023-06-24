@@ -4,6 +4,7 @@ import { handleServerAppError, handleServerNetworkError } from "../utils/error-u
 import { appActions } from "./app-reducer";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { todolistsActions } from "./todolists-reducer";
+import {clearData} from '../common/actions/common-actions';
 
 export type TasksType = {
     [key: string]: Array<TaskResponseType>;
@@ -39,7 +40,7 @@ const tasksSlice = createSlice({
             .addCase(todolistsActions.removeTodolist, (state, action) => {
                 delete state[action.payload.todolistId];
             })
-            .addCase(todolistsActions.clearData, () => {
+            .addCase(clearData.type, () => {
                 return {};
             });
     },
