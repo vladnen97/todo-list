@@ -16,6 +16,7 @@ import { Navigate } from "react-router-dom";
 import {selectIsLoggedIn} from '../utils/selectors/auth.selectors';
 import {selectTodolists} from '../utils/selectors/todolists.selectors';
 import {selectTasks} from '../utils/selectors/tasks.selectors';
+import {clearData} from '../common/actions/common-actions';
 
 export const TodolistsList = memo(() => {
     const isLoggedIn = useAppSelector(selectIsLoggedIn);
@@ -29,7 +30,7 @@ export const TodolistsList = memo(() => {
         dispatch(fetchTodolists());
 
         return () => {
-            dispatch(todolistsActions.clearData());
+            dispatch(clearData());
         };
     }, []);
 
