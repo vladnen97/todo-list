@@ -3,7 +3,7 @@ import { AppThunk } from "./store";
 import {appActions, RequestStatusType} from './app-reducer';
 import { handleServerAppError, handleServerNetworkError } from "../utils/error-utils";
 import { AxiosError } from "axios";
-import { fetchTasks } from "./tasks-reducer";
+import { tasksThunks } from "./tasks-reducer";
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {clearData} from '../common/actions/common-actions';
 
@@ -58,7 +58,7 @@ export const fetchTodolists = (): AppThunk => (dispatch) => {
         })
         .then((todos) => {
             todos.forEach((el) => {
-                dispatch(fetchTasks(el.id));
+                dispatch(tasksThunks.fetchTasks(el.id));
             });
         })
         .catch((e: AxiosError) => {
