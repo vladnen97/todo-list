@@ -1,6 +1,6 @@
 import { TaskPriorities, TaskStatuses } from "../../api/tasks-api";
 import {tasksReducer, tasksThunks, TasksType} from '../tasks-reducer';
-import { todolistsActions } from "../todolists-reducer";
+import {todolistsActions, todolistsThunks} from '../todolists-reducer';
 
 let startState: TasksType = {};
 beforeEach(() => {
@@ -154,14 +154,14 @@ test("title of specified task should be changed", () => {
     expect(endState["todolistId2"][0].title).toBe("bread");
 });
 test("new array should be added when new todolist is added", () => {
-    const action = todolistsActions.addTodolist({
+    const action = todolistsThunks.createTodolist.fulfilled({
         todolist: {
             id: "blabla",
             title: "new todolist",
             order: 0,
             addedDate: "",
-        },
-    });
+        }
+    }, 'requestId', 'new todolist')
     const endState = tasksReducer(startState, action);
 
     const keys = Object.keys(endState);
@@ -174,7 +174,7 @@ test("new array should be added when new todolist is added", () => {
     expect(endState[newKey]).toEqual([]);
 });
 test("propertry with todolistId should be deleted", () => {
-    const action = todolistsActions.removeTodolist({ todolistId: "todolistId2" });
+    const action = todolistsThunks.removeTodolist.fulfilled({ todolistId: 'todolistId2' }, 'requstId', 'todolistId2');
 
     const endState = tasksReducer(startState, action);
 
@@ -185,7 +185,7 @@ test("propertry with todolistId should be deleted", () => {
 });
 
 test("empty arrays should be added when we set todolists", () => {
-    const action = todolistsActions.setTodolists({
+    const action = todolistsThunks.fetchTodolists.fulfilled({
         todolists: [
             { id: "1", title: "title 1", order: 0, addedDate: "" },
             {
@@ -195,7 +195,7 @@ test("empty arrays should be added when we set todolists", () => {
                 addedDate: "",
             },
         ],
-    });
+    }, 'requestId');
     const endState = tasksReducer({}, action);
 
     const keys = Object.keys(endState);

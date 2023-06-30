@@ -1,11 +1,7 @@
 import React, { memo, useCallback, useEffect } from 'react'
 import {
-    createTodolistTC,
-    fetchTodolists,
     FilterValuesType,
-    removeTodolistTC,
-    todolistsActions,
-    updateTodolistTC,
+    todolistsActions, todolistsThunks,
 } from '../store/todolists-reducer'
 import { tasksThunks } from '../store/tasks-reducer'
 import { useAppDispatch, useAppSelector } from '../hooks/hooks'
@@ -28,17 +24,17 @@ export const TodolistsList = memo(() => {
 
     useEffect(() => {
         if (!isLoggedIn) return
-        dispatch(fetchTodolists())
+        dispatch(todolistsThunks.fetchTodolists())
     }, [])
 
     const addTodolist = useCallback((title: string) => {
-        dispatch(createTodolistTC(title))
+        dispatch(todolistsThunks.createTodolist(title))
     }, [])
     const deleteTodolist = useCallback((todolistId: string): void => {
-        dispatch(removeTodolistTC(todolistId))
+        dispatch(todolistsThunks.removeTodolist(todolistId))
     }, [])
-    const changeTodolistTitle = useCallback((todolistId: string, newTitle: string) => {
-        dispatch(updateTodolistTC(todolistId, newTitle))
+    const changeTodolistTitle = useCallback((todolistId: string, title: string) => {
+        dispatch(todolistsThunks.updateTodolist({ todolistId, title }))
     }, [])
     const changeFilter = useCallback((todolistId: string, value: FilterValuesType): void => {
         dispatch(todolistsActions.changeTodolistFilter({ todolistId, filter: value }))
