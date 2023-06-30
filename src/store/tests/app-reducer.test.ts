@@ -1,4 +1,4 @@
-import {appActions, appReducer, RequestStatusType} from '../app-reducer';
+import {appActions, appReducer, appThunks, RequestStatusType} from '../app-reducer';
 
 let startState: {
     status: RequestStatusType;
@@ -28,7 +28,7 @@ test("status should be set", () => {
 });
 
 test("app should be initialized", () => {
-    const endState = appReducer(startState, appActions.setIsInitialized({isInitialized: true}));
+    const endState = appReducer(startState, appThunks.initializeApp.fulfilled({isInitialized: true}, 'requestId'));
 
     expect(endState.isInitialized).toBeTruthy();
 });

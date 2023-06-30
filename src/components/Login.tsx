@@ -1,10 +1,10 @@
 import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField } from "@mui/material";
 import React from "react";
 import { useFormik } from "formik";
-import { loginTC } from "../store/auth-reducer";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { Navigate } from "react-router-dom";
-import {selectIsLoggedIn} from '../utils/selectors/auth.selectors';
+import {selectIsLoggedIn} from '../common/selectors/auth.selectors';
+import {authThunks} from '../store/auth-reducer';
 
 type FormikErrorType = {
     email?: string;
@@ -40,7 +40,7 @@ export const Login = () => {
         },
         validate,
         onSubmit: (values) => {
-            dispatch(loginTC(values));
+            dispatch(authThunks.login(values));
             formik.resetForm();
         },
     });

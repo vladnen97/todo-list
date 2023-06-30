@@ -1,10 +1,9 @@
 import { TaskModelType, TaskResponseType, tasksAPI } from '../api/tasks-api'
-import { handleServerAppError, handleServerNetworkError } from '../utils/error-utils'
 import { appActions } from './app-reducer'
 import { createSlice } from '@reduxjs/toolkit'
 import { todolistsThunks } from './todolists-reducer'
 import { clearData } from '../common/actions/common-actions'
-import { createAppAsyncThunk } from '../utils/create-app-async-thunk'
+import {createAppAsyncThunk, handleServerAppError, handleServerNetworkError} from '../common/utils'
 
 export type TasksType = {
     [key: string]: Array<TaskResponseType>
@@ -76,7 +75,7 @@ const updateTask = createAppAsyncThunk<{task: TaskResponseType}, {todolistId: st
         const task = getState().tasks[arg.todolistId].find(el => el.id === arg.taskId)
 
         if (!task) {
-            console.warn('task not found')
+            dispatch(appActions.setAppError({error: 'Task not found in this state :('}))
             return rejectWithValue(null)
         }
 
@@ -114,24 +113,20 @@ const tasksSlice = createSlice({
             .addCase(fetchTasks.fulfilled, (state, action) => {
                 state[action.payload.todolistId] = action.payload.tasks
             })
-            .addCase(fetchTasks.rejected, (state, action) => {})
 
             .addCase(createTask.fulfilled, (state, action) => {
                 state[action.payload.task.todoListId].unshift(action.payload.task)
             })
-            .addCase(createTask.rejected, (state, action) => {})
 
             .addCase(deleteTask.fulfilled, (state, action) => {
                 const taskIndex = state[action.payload.todolistId].findIndex(el => el.id === action.payload.taskId)
                 state[action.payload.todolistId].splice(taskIndex, 1)
             })
-            .addCase(deleteTask.rejected, (state, action) => {})
 
             .addCase(updateTask.fulfilled, (state, action) => {
                 const taskIndex = state[action.payload.task.todoListId].findIndex(el => el.id === action.payload.task.id)
                 state[action.payload.task.todoListId].splice(taskIndex, 1, action.payload.task)
             })
-            .addCase(updateTask.rejected, (state, action) => {})
 
             .addCase(todolistsThunks.fetchTodolists.fulfilled, (state, action) => {
                 action.payload.todolists.forEach(el => (state[el.id] = []))

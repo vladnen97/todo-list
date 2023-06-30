@@ -10,9 +10,9 @@ import { Grid, Paper } from '@mui/material'
 import { AddItemForm } from './AddItemForm'
 import { Todolist } from './Todolist'
 import { Navigate } from 'react-router-dom'
-import { selectIsLoggedIn } from '../utils/selectors/auth.selectors'
-import { selectTodolists } from '../utils/selectors/todolists.selectors'
-import { selectTasks } from '../utils/selectors/tasks.selectors'
+import { selectIsLoggedIn } from '../common/selectors/auth.selectors'
+import { selectTodolists } from '../common/selectors/todolists.selectors'
+import { selectTasks } from '../common/selectors/tasks.selectors'
 
 
 export const TodolistsList = memo(() => {

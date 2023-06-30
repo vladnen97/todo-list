@@ -1,10 +1,8 @@
 import { TodolistResponseType, todolistsAPI } from "../api/todolists-api";
 import {appActions, RequestStatusType} from './app-reducer';
-import { handleServerAppError, handleServerNetworkError } from "../utils/error-utils";
-import { tasksThunks } from "./tasks-reducer";
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {clearData} from '../common/actions/common-actions';
-import {createAppAsyncThunk} from '../utils/create-app-async-thunk';
+import {createAppAsyncThunk, handleServerAppError, handleServerNetworkError} from '../common/utils'
 
 export type FilterValuesType = "all" | "active" | "completed";
 export type TodolistType = TodolistResponseType & { filter: FilterValuesType; entityStatus: RequestStatusType }
@@ -15,10 +13,6 @@ const fetchTodolists = createAppAsyncThunk<{todolists: Array<TodolistResponseTyp
         dispatch(appActions.setAppStatus({status: "loading"}))
 
         const res = await todolistsAPI.getTodolists()
-
-        res.data.forEach(el => {
-            dispatch(tasksThunks.fetchTasks(el.id))
-        })
 
         return {todolists: res.data}
     } catch (e) {

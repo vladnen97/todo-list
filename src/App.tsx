@@ -6,10 +6,10 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { Login } from "./components/Login";
 import { TodolistsList } from "./components/TodolistsList";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
-import { initializeAppTC } from "./store/app-reducer";
-import { logoutTC } from "./store/auth-reducer";
-import {selectIsInitialized, selectStatus} from './utils/selectors/app.selectors';
-import {selectIsLoggedIn} from './utils/selectors/auth.selectors';
+import {selectIsInitialized, selectStatus} from './common/selectors/app.selectors';
+import {selectIsLoggedIn} from './common/selectors/auth.selectors';
+import {appThunks} from './store/app-reducer';
+import {authThunks} from './store/auth-reducer';
 
 export function App() {
     const status = useAppSelector(selectStatus);
@@ -18,8 +18,8 @@ export function App() {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(initializeAppTC());
-    }, []);
+        dispatch(appThunks.initializeApp())
+    }, [])
 
     return !isInitialized ? (
         <div style={{ position: "fixed", top: "40%", textAlign: "center", width: "100%" }}>
@@ -36,7 +36,7 @@ export function App() {
                         <Button
                             color="inherit"
                             onClick={() => {
-                                dispatch(logoutTC());
+                                dispatch(authThunks.logout());
                             }}
                         >
                             Logout
