@@ -7,7 +7,7 @@ import {
     todolistsActions,
     updateTodolistTC,
 } from '../store/todolists-reducer'
-import { createTask, deleteTask, updateTaskTC } from '../store/tasks-reducer'
+import { tasksThunks } from '../store/tasks-reducer'
 import { useAppDispatch, useAppSelector } from '../hooks/hooks'
 import { TaskStatuses } from '../api/tasks-api'
 import { Grid, Paper } from '@mui/material'
@@ -37,24 +37,24 @@ export const TodolistsList = memo(() => {
     const deleteTodolist = useCallback((todolistId: string): void => {
         dispatch(removeTodolistTC(todolistId))
     }, [])
-    const changeTodolistTitle = useCallback((todolistID: string, newTitle: string) => {
-        dispatch(updateTodolistTC(todolistID, newTitle))
+    const changeTodolistTitle = useCallback((todolistId: string, newTitle: string) => {
+        dispatch(updateTodolistTC(todolistId, newTitle))
     }, [])
     const changeFilter = useCallback((todolistId: string, value: FilterValuesType): void => {
         dispatch(todolistsActions.changeTodolistFilter({ todolistId, filter: value }))
     }, [])
 
-    const addTask = useCallback((todolistID: string, title: string): void => {
-        dispatch(createTask(todolistID, title))
+    const addTask = useCallback((todolistId: string, title: string): void => {
+        dispatch(tasksThunks.createTask({ todolistId, title }))
     }, [])
-    const removeTask = useCallback((todolistID: string, taskId: string): void => {
-        dispatch(deleteTask(todolistID, taskId))
+    const removeTask = useCallback((todolistId: string, taskId: string): void => {
+        dispatch(tasksThunks.deleteTask({ todolistId, taskId }))
     }, [])
-    const changeStatus = useCallback((todolistID: string, taskId: string, status: TaskStatuses): void => {
-        dispatch(updateTaskTC(todolistID, taskId, { status }))
+    const changeStatus = useCallback((todolistId: string, taskId: string, status: TaskStatuses): void => {
+        dispatch(tasksThunks.updateTask({todolistId, taskId, taskModel: {status}}))
     }, [])
-    const changeTaskTitle = useCallback((todolistID: string, taskId: string, title: string) => {
-        dispatch(updateTaskTC(todolistID, taskId, { title }))
+    const changeTaskTitle = useCallback((todolistId: string, taskId: string, title: string) => {
+        dispatch(tasksThunks.updateTask({todolistId, taskId, taskModel: {title}}))
     }, [])
 
     return !isLoggedIn ? (

@@ -1,5 +1,5 @@
 import { TaskPriorities, TaskStatuses } from "../../api/tasks-api";
-import {tasksActions, tasksReducer, tasksThunks, TasksType} from '../tasks-reducer';
+import {tasksReducer, tasksThunks, TasksType} from '../tasks-reducer';
 import { todolistsActions } from "../todolists-reducer";
 
 let startState: TasksType = {};
@@ -85,15 +85,14 @@ beforeEach(() => {
 });
 
 test("correct task should be deleted from correct array", () => {
-    const endState = tasksReducer(startState, tasksActions.removeTask({ todolistId: "todolistId2", taskId: "2" }));
+    const endState = tasksReducer(startState, tasksThunks.deleteTask.fulfilled({ todolistId: "todolistId2", taskId: "2" }, 'requestId', { todolistId: "todolistId2", taskId: "2" }));
 
     expect(endState["todolistId1"].length).toBe(3);
     expect(endState["todolistId2"].length).toBe(2);
     expect(endState["todolistId2"].every((t) => t.id != "2")).toBeTruthy();
 });
 test("correct task should be added to correct array", () => {
-    const action = tasksActions.addTask({
-        task: {
+    const action = tasksThunks.createTask.fulfilled({task: {
             todoListId: "todolistId2",
             title: "juice",
             status: TaskStatuses.New,
@@ -104,8 +103,7 @@ test("correct task should be added to correct array", () => {
             priority: 0,
             startDate: "",
             id: "id exists",
-        },
-    });
+        }}, 'requestId', {todolistId: 'todolistId2', title: 'juice'})
     const endState = tasksReducer(startState, action);
 
     expect(endState["todolistId1"].length).toBe(3);
@@ -127,7 +125,7 @@ test("status of specified task should be changed", () => {
         order: 0,
         priority: TaskPriorities.Low,
     };
-    const action = tasksActions.updateTask({ task });
+    const action = tasksThunks.updateTask.fulfilled({ task }, 'requsetId', {todolistId: 'todolistId2', taskId: '2', taskModel: {status: TaskStatuses.New}});
 
     const endState = tasksReducer(startState, action);
 
@@ -147,7 +145,7 @@ test("title of specified task should be changed", () => {
         order: 0,
         priority: TaskPriorities.Low,
     };
-    const action = tasksActions.updateTask({ task });
+    const action = tasksThunks.updateTask.fulfilled({ task }, 'requsetId', {todolistId: 'todolistId2', taskId: '2', taskModel: {title: 'yogurt'}});
 
     const endState = tasksReducer(startState, action);
 
