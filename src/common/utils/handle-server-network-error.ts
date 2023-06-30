@@ -1,12 +1,6 @@
-import { AppDispatchType } from "../store/store";
-import { ResponseType } from "../api";
-import {appActions} from '../store/app-reducer';
+import {AppDispatchType} from '../../store/store';
 import axios, {AxiosError} from 'axios';
-
-export const handleServerAppError = <D>(dispatch: AppDispatchType, res: ResponseType<D>): void => {
-    dispatch(appActions.setAppError({error: res.messages[0]}));
-    dispatch(appActions.setAppStatus({status: "failed"}));
-};
+import {appActions} from '../../store/app-reducer';
 
 export const handleServerNetworkError = (dispatch: AppDispatchType, e: unknown): void => {
     const err = e as Error | AxiosError<{ error: string }>
