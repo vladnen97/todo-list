@@ -1,10 +1,27 @@
 import { authAPI } from "../api/auth-api";
-import { AppThunk } from "./store";
-import { handleServerAppError, handleServerNetworkError } from "../utils/error-utils";
 import { authActions } from "./auth-reducer";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {createAppAsyncThunk, handleServerAppError, handleServerNetworkError} from '../common/utils';
 
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed";
+
+const initializeApp = createAppAsyncThunk<{ isInitialized: boolean }>('app/initializeApp', async (arg, thunkAPI) => {
+    const { dispatch, rejectWithValue } = thunkAPI
+
+    try {
+        const res = await authAPI.me()
+        if (res.data.resultCode === 0) {
+            dispatch(authActions.setIsLoggedIn({ isLoggedIn: true }))
+        } else {
+            handleServerAppError(dispatch, res.data)
+        }
+        return { isInitialized: true }
+
+    } catch (e) {
+        handleServerNetworkError(dispatch, e)
+        return rejectWithValue(null)
+    }
+})
 
 const appSlice = createSlice({
     name: "app",
@@ -20,31 +37,15 @@ const appSlice = createSlice({
         setAppError: (state, action: PayloadAction<{ error: string | null }>) => {
             state.error = action.payload.error;
         },
-        setIsInitialized: (state, action: PayloadAction<{ isInitialized: boolean }>) => {
-            state.isInitialized = action.payload.isInitialized;
-        },
     },
-});
+    extraReducers: builder => {
+        builder
+            .addCase(initializeApp.fulfilled, (state, action) => {
+                state.isInitialized = action.payload.isInitialized
+            })
+    }
+})
 
 export const appReducer = appSlice.reducer;
 export const appActions = appSlice.actions;
-
-//thunk
-
-export const initializeAppTC = (): AppThunk => (dispatch) => {
-    authAPI
-        .me()
-        .then((res) => {
-            if (res.data.resultCode === 0) {
-                dispatch(authActions.setIsLoggedIn({ isLoggedIn: true }));
-            } else {
-                handleServerAppError(dispatch, res.data);
-            }
-        })
-        .catch((e) => {
-            handleServerNetworkError(dispatch, e);
-        })
-        .finally(() => {
-            dispatch(appActions.setIsInitialized({ isInitialized: true }));
-        });
-};
+export const appThunks = { initializeApp }
