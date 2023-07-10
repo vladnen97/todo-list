@@ -4,6 +4,28 @@ import { appActions } from './app-reducer'
 import { clearData } from '../common/actions/common-actions'
 import {createAppAsyncThunk, handleServerAppError, handleServerNetworkError} from '../common/utils'
 
+const authSlice = createSlice({
+    name: 'auth',
+    initialState: {
+        isLoggedIn: false,
+    },
+    reducers: {
+        setIsLoggedIn: (state, action: PayloadAction<{ isLoggedIn: boolean }>) => {
+            state.isLoggedIn = action.payload.isLoggedIn
+        },
+    },
+    extraReducers: builder => {
+        builder
+            .addCase(login.fulfilled, (state, action) => {
+                state.isLoggedIn = action.payload.isLoggedIn
+        })
+            .addCase(logout.fulfilled, (state, action) => {
+                state.isLoggedIn = action.payload.isLoggedIn
+            })
+    }
+})
+
+//thunks
 const login = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>('auth/login', async (arg, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI
 
@@ -43,27 +65,6 @@ const logout = createAppAsyncThunk<{ isLoggedIn: boolean }>('auth/logout', async
     } catch (e) {
         handleServerNetworkError(dispatch, e)
         return rejectWithValue(null)
-    }
-})
-
-const authSlice = createSlice({
-    name: 'auth',
-    initialState: {
-        isLoggedIn: false,
-    },
-    reducers: {
-        setIsLoggedIn: (state, action: PayloadAction<{ isLoggedIn: boolean }>) => {
-            state.isLoggedIn = action.payload.isLoggedIn
-        },
-    },
-    extraReducers: builder => {
-        builder
-            .addCase(login.fulfilled, (state, action) => {
-                state.isLoggedIn = action.payload.isLoggedIn
-        })
-            .addCase(logout.fulfilled, (state, action) => {
-                state.isLoggedIn = action.payload.isLoggedIn
-            })
     }
 })
 

@@ -5,24 +5,6 @@ import {createAppAsyncThunk, handleServerAppError, handleServerNetworkError} fro
 
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed";
 
-const initializeApp = createAppAsyncThunk<{ isInitialized: boolean }>('app/initializeApp', async (arg, thunkAPI) => {
-    const { dispatch, rejectWithValue } = thunkAPI
-
-    try {
-        const res = await authAPI.me()
-        if (res.data.resultCode === 0) {
-            dispatch(authActions.setIsLoggedIn({ isLoggedIn: true }))
-        } else {
-            handleServerAppError(dispatch, res.data)
-        }
-        return { isInitialized: true }
-
-    } catch (e) {
-        handleServerNetworkError(dispatch, e)
-        return rejectWithValue(null)
-    }
-})
-
 const appSlice = createSlice({
     name: "app",
     initialState: {
@@ -43,6 +25,25 @@ const appSlice = createSlice({
             .addCase(initializeApp.fulfilled, (state, action) => {
                 state.isInitialized = action.payload.isInitialized
             })
+    }
+})
+
+//thunks
+const initializeApp = createAppAsyncThunk<{ isInitialized: boolean }>('app/initializeApp', async (arg, thunkAPI) => {
+    const { dispatch, rejectWithValue } = thunkAPI
+
+    try {
+        const res = await authAPI.me()
+        if (res.data.resultCode === 0) {
+            dispatch(authActions.setIsLoggedIn({ isLoggedIn: true }))
+        } else {
+            handleServerAppError(dispatch, res.data)
+        }
+        return { isInitialized: true }
+
+    } catch (e) {
+        handleServerNetworkError(dispatch, e)
+        return rejectWithValue(null)
     }
 })
 
