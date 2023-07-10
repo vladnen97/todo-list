@@ -1,9 +1,15 @@
 import axios from "axios";
 
+type FieldsErrorsType = {
+    error: string
+    field: string
+}
+
 export type ResponseType<D = {}> = {
-    resultCode: number;
-    messages: string[];
-    data: D;
+    resultCode: number
+    messages: string[]
+    data: D
+    fieldsErrors: FieldsErrorsType[]
 };
 
 export const instance = axios.create({
