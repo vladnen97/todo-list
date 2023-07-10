@@ -5,20 +5,22 @@ import { ErrorSnackBar } from "./components/ErrorSnackBar";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Login } from "./components/Login";
 import { TodolistsList } from "./components/TodolistsList";
-import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 import {selectIsInitialized, selectStatus} from './common/selectors/app.selectors';
 import {selectIsLoggedIn} from './common/selectors/auth.selectors';
 import {appThunks} from './store/app-reducer';
 import {authThunks} from './store/auth-reducer';
+import {useAppSelector} from './hooks';
+import {useActions} from './hooks';
 
 export function App() {
     const status = useAppSelector(selectStatus);
     const isLoggedIn = useAppSelector(selectIsLoggedIn);
     const isInitialized = useAppSelector(selectIsInitialized);
-    const dispatch = useAppDispatch();
+    const { initializeApp } = useActions(appThunks)
+    const { logout } = useActions(authThunks)
 
     useEffect(() => {
-        dispatch(appThunks.initializeApp())
+        initializeApp()
     }, [])
 
     return !isInitialized ? (
@@ -36,7 +38,7 @@ export function App() {
                         <Button
                             color="inherit"
                             onClick={() => {
-                                dispatch(authThunks.logout());
+                                logout()
                             }}
                         >
                             Logout

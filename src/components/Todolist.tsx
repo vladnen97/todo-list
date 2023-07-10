@@ -7,8 +7,8 @@ import { Task } from './Task'
 import { FilterValuesType, TodolistType } from '../store/todolists-reducer'
 import { TaskStatuses } from '../api/tasks-api'
 import { TaskResponseType } from '../api/tasks-api'
-import {useAppDispatch} from '../hooks/hooks';
 import {tasksThunks} from '../store/tasks-reducer';
+import {useActions} from '../hooks';
 
 type TodolistPropsType = {
     todolist: TodolistType
@@ -63,10 +63,10 @@ type TodolistPropsType = {
 
 export const Todolist = memo((props: TodolistPropsType) => {
     let tasks = props.tasks
-    const dispatch = useAppDispatch()
+    const { fetchTasks } = useActions(tasksThunks)
 
     useEffect(() => {
-        dispatch(tasksThunks.fetchTasks(props.todolist.id))
+        fetchTasks(props.todolist.id)
     }, [])
 
     const filterHandler = (filter: FilterValuesType) => props.changeFilter(props.todolist.id, filter)
