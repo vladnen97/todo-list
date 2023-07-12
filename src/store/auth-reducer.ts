@@ -1,6 +1,5 @@
 import { authAPI, LoginParamsType } from '../api/auth-api'
 import { createSlice } from '@reduxjs/toolkit'
-import { appActions } from './app-reducer'
 import { clearData } from '../common/actions/common-actions'
 import { createAppAsyncThunk, handleServerAppError} from '../common/utils'
 import { thunkTryCatch } from '../common/utils/thunk-try-catch'
@@ -27,14 +26,13 @@ const authSlice = createSlice({
 
 //thunks
 const me = createAppAsyncThunk<{ isLoggedIn: boolean }>('auth/me', async (arg, thunkAPI) => {
-    const { dispatch, rejectWithValue } = thunkAPI
+    const { rejectWithValue } = thunkAPI
 
     return thunkTryCatch(thunkAPI, async () => {
         const res = await authAPI.me()
         if (res.data.resultCode === 0) {
             return { isLoggedIn: true }
         } else {
-            handleServerAppError(dispatch, res.data)
             return rejectWithValue(null)
         }
     })
@@ -47,7 +45,6 @@ const login = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>('aut
         const res = await authAPI.login(arg)
 
         if (res.data.resultCode === 0) {
-            dispatch(appActions.setAppStatus({ status: 'succeeded' }))
             return { isLoggedIn: true }
         } else {
             handleServerAppError(dispatch, res.data, !res.data.fieldsErrors.length)
@@ -62,7 +59,6 @@ const logout = createAppAsyncThunk<{ isLoggedIn: boolean }>('auth/logout', async
         const res = await authAPI.logout()
 
         if (res.data.resultCode === 0) {
-            dispatch(appActions.setAppStatus({ status: 'succeeded' }))
             dispatch(clearData())
             return { isLoggedIn: false }
         } else {

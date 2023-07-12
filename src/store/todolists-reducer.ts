@@ -82,7 +82,6 @@ const createTodolist = createAppAsyncThunk<{todolist: TodolistResponseType}, str
     return thunkTryCatch(thunkAPI, async () => {
         const res = await todolistsAPI.createTodolist(arg)
         if (res.data.resultCode === 0) {
-            dispatch(appActions.setAppStatus({status: "succeeded"}))
             return {todolist: res.data.data.item}
         } else {
             handleServerAppError(dispatch, res.data)
@@ -96,7 +95,6 @@ const updateTodolist = createAppAsyncThunk<{todolistId: string, title: string}, 
     return thunkTryCatch(thunkAPI, async () => {
         const res = await todolistsAPI.updateTodolist(arg.todolistId, arg.title)
         if (res.data.resultCode === 0) {
-            dispatch(appActions.setAppStatus({ status: 'succeeded' }))
             return { todolistId: arg.todolistId, title: arg.title }
         } else {
             handleServerAppError(dispatch, res.data)

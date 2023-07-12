@@ -6,8 +6,8 @@ import { selectIsLoggedIn } from '../common/selectors/auth.selectors'
 import { authThunks } from '../store/auth-reducer'
 import { LoginParamsType } from '../api/auth-api'
 import { ResponseType } from '../api'
-import {useAppSelector} from '../hooks';
-import {useAppDispatch} from '../hooks';
+import { useAppSelector } from '../hooks'
+import { useAppDispatch } from '../hooks'
 
 type FormikErrorType = {
     email?: string
@@ -48,9 +48,7 @@ export const Login = () => {
                 .catch((data: ResponseType) => {
                     const { fieldsErrors } = data
 
-                    if (fieldsErrors) {
-                        fieldsErrors.forEach(el => formikHelpers.setFieldError(el.field, el.error))
-                    }
+                    fieldsErrors?.forEach(el => formikHelpers.setFieldError(el.field, el.error))
                 })
         },
     })
