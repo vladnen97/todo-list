@@ -1,4 +1,4 @@
-import { instance, ResponseType } from "./index";
+import { instance, ResponseType } from "../../../common/api";
 
 export interface LoginParamsType {
     email: string;

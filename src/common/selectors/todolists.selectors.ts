@@ -1,4 +1,4 @@
-import {RootStateType} from '../../store/store';
-import {TodolistType} from '../../store/todolists-reducer';
+import {RootStateType} from '../../app/store';
+import {TodolistType} from '../../features/todolists-list/todolists/model/todolists-reducer';
 
 export const selectTodolists = (state: RootStateType):  TodolistType[] => state.todolists

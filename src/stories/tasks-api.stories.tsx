@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
-import { tasksAPI } from "../api/tasks-api";
+import { tasksAPI } from "../features/todolists-list/tasks/api/tasks-api";
 
 const meta: Meta = {
     title: "API/Tasks",

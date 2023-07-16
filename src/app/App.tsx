@@ -1,16 +1,16 @@
 import React, { useEffect } from "react";
 import "./App.css";
 import { AppBar, Button, CircularProgress, Container, LinearProgress, Toolbar, Typography } from "@mui/material";
-import { ErrorSnackBar } from "./components/ErrorSnackBar";
+import { ErrorSnackBar } from '../common/components';
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Login } from "./components/Login";
-import { TodolistsList } from "./components/TodolistsList";
-import {selectIsInitialized, selectStatus} from './common/selectors/app.selectors';
-import {selectIsLoggedIn} from './common/selectors/auth.selectors';
-import {appThunks} from './store/app-reducer';
-import {authThunks} from './store/auth-reducer';
-import {useAppSelector} from './hooks';
-import {useActions} from './hooks';
+import { Login } from "../features/auth/ui/Login";
+import { TodolistsList } from "../features/todolists-list/todolists/ui/TodolistsList";
+import {selectIsInitialized, selectStatus} from '../common/selectors/app.selectors';
+import {selectIsLoggedIn} from '../common/selectors/auth.selectors';
+import {appThunks} from './app-reducer';
+import {authThunks} from '../features/auth/model/auth-reducer';
+import {useAppSelector} from '../common/hooks';
+import {useActions} from '../common/hooks';
 
 export function App() {
     const status = useAppSelector(selectStatus);

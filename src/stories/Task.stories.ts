@@ -1,22 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Task } from "../components/Task";
-import { TaskPriorities, TaskStatuses } from "../api/tasks-api";
+import { Task } from "../features/todolists-list/tasks/ui/task/Task";
+import {TaskPriorities, TaskStatuses} from '../features/todolists-list/tasks/api/tasks-api-types';
 
 const meta: Meta<typeof Task> = {
     title: "Todolist/Task",
     component: Task,
     tags: ["autodocs"],
-    argTypes: {
-        changeStatus: {
-            action: "status changed",
-        },
-        removeTask: {
-            action: "task removed",
-        },
-        changeTaskTitle: {
-            action: "task`s title changed",
-        },
-    },
     args: {
         task: {
             id: "3-2-1",

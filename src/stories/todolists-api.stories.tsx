@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useEffect, useState } from "react";
-import { todolistsAPI } from "../api/todolists-api";
+import { todolistsAPI } from "../features/todolists-list/todolists/api/todolists-api";
 
 const meta: Meta = {
     title: "API/Todolists",

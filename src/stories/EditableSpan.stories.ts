@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { EditableSpan } from "../components/EditableSpan";
+import { EditableSpan } from '../common/components';
 
 const meta: Meta<typeof EditableSpan> = {
     title: "Todolist/EditableSpan",

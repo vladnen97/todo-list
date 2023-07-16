@@ -1,6 +1,6 @@
-import {AppDispatchType} from '../../store/store';
+import {AppDispatchType} from '../../app/store';
 import axios, {AxiosError} from 'axios';
-import {appActions} from '../../store/app-reducer';
+import {appActions} from '../../app/app-reducer';
 
 export const handleServerNetworkError = (dispatch: AppDispatchType, e: unknown): void => {
     const err = e as Error | AxiosError<{ error: string }>
