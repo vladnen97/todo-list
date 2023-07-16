@@ -1,7 +1,12 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { AddItemForm, AddItemFormPropsType } from "../components/AddItemForm";
+import { AddItemForm} from '../common/components';
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 import { Button, TextField } from "@mui/material";
+
+type AddItemFormStoryType = {
+    addItem: (title: string) => void;
+    disabled?: boolean;
+};
 
 const meta: Meta<typeof AddItemForm> = {
     title: "Todolist/AddItemForm",
@@ -19,7 +24,7 @@ type Story = StoryObj<typeof AddItemForm>;
 
 export const AddItemFormStory: Story = {};
 
-const AddItemFormStoryWithhooks = (props: AddItemFormPropsType) => {
+const AddItemFormStoryWithhooks = (props: AddItemFormStoryType) => {
     const [title, setTitle] = useState<string>("");
     const [error, setError] = useState<string | null>("Title is required");
 
