@@ -2,9 +2,9 @@ import {
     FilterValuesType, todolistsActions,
     todolistsReducer, todolistsThunks,
     TodolistType,
-} from '../todolists-reducer';
+} from './todolists-reducer';
 import { v1 } from "uuid";
-import { TodolistResponseType } from "../../api/todolists-api";
+import { TodolistResponseType } from "../api/todolists-api";
 
 let todolistId1: string;
 let todolistId2: string;

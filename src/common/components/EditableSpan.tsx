@@ -40,6 +40,8 @@ export const EditableSpan = memo((props: EditableSpanPropsType) => {
             onKeyDown={onEnterPressHandler}
         />
     ) : (
-        <span onDoubleClick={activateEditMode}> {props.title} </span>
+        <span onDoubleClick={activateEditMode} style={{whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis'}}> {props.title} </span>
     );
 });

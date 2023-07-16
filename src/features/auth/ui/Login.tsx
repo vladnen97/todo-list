@@ -2,34 +2,28 @@ import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, 
 import React from 'react'
 import { useFormik, FormikHelpers } from 'formik'
 import { Navigate } from 'react-router-dom'
-import { selectIsLoggedIn } from '../common/selectors/auth.selectors'
-import { authThunks } from '../store/auth-reducer'
+import { selectIsLoggedIn } from '../../../common/selectors/auth.selectors'
+import { authThunks } from '../model/auth-reducer'
 import { LoginParamsType } from '../api/auth-api'
-import { ResponseType } from '../api'
-import { useAppSelector } from '../hooks'
-import { useAppDispatch } from '../hooks'
+import { ResponseType } from '../../../common/api'
+import { useAppSelector } from '../../../common/hooks'
+import { useAppDispatch } from '../../../common/hooks'
 
-type FormikErrorType = {
-    email?: string
-    password?: string
-    rememberMe?: boolean
-}
+type FormikErrorType = Partial<LoginParamsType>
 
 const validate = (values: FormikErrorType) => {
-    // const errors: FormikErrorType = {};
-    // if (!values.email) {
-    //     errors.email = "Required";
-    // } else if (!/^[\w\-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(values.email)) {
-    //     errors.email = "Invalid email address";
-    // }
-    //
-    // if (!values.password) {
-    //     errors.password = "Required";
-    // } else if (values.password.length < 3) {
-    //     errors.password = "Must be 3 characters or more";
-    // }
-    //
-    // return errors;
+    const errors: FormikErrorType = {};
+    if (!values.email) {
+        errors.email = "Required";
+    }
+
+    if (!values.password) {
+        errors.password = "Required";
+    } else if (values.password.length < 3) {
+        errors.password = "Must be 3 characters or more";
+    }
+
+    return errors;
 }
 
 export const Login = () => {

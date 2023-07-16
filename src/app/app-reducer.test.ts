@@ -1,4 +1,4 @@
-import {appActions, appReducer, appThunks, RequestStatusType} from '../app-reducer';
+import {appActions, appReducer, appThunks, RequestStatusType} from './app-reducer';
 
 let startState: {
     status: RequestStatusType;
@@ -21,7 +21,7 @@ test("error should be set", () => {
 });
 
 test("status should be set", () => {
-    const endState = appReducer(startState, appActions.setAppStatus({status: "succeeded"}));
+    const endState = appReducer(startState, appThunks.initializeApp.fulfilled({isInitialized: true}, 'requestId'));
 
     expect(endState.status).toBe("succeeded");
     expect(endState.error).toBe(null);
