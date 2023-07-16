@@ -1,12 +1,12 @@
 import React, { ChangeEvent, KeyboardEvent, memo, useState } from "react";
 import { Button, TextField } from "@mui/material";
 
-export type AddItemFormPropsType = {
+type AddItemFormPropsType = {
     /**
      * Add item with some title
      * @param title title
      */
-    addItem: (title: string) => void;
+    addItem: (title: string) => Promise<any>
     disabled?: boolean;
 };
 
@@ -17,10 +17,12 @@ export const AddItemForm = memo(({ addItem, disabled = false }: AddItemFormProps
     const addItemHandler = () => {
         const trimmedTitle = title.trim();
         if (trimmedTitle) {
-            addItem(trimmedTitle);
-            setTitle("");
+            addItem(trimmedTitle)
+                .then(() => {setTitle("")})
+                .catch(error => {
+                    setError(error.messages ? error.messages[0] : null)
+                })
         } else {
-            setTitle("");
             setError("Title is required");
         }
     };
@@ -45,6 +47,7 @@ export const AddItemForm = memo(({ addItem, disabled = false }: AddItemFormProps
                 onChange={onChangeHandler}
                 onKeyDown={onKeyPressHandler}
                 helperText={error}
+                style={{width: '262px'}}
             />
             <Button
                 onClick={addItemHandler}

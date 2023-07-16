@@ -1,8 +1,8 @@
 import { authAPI, LoginParamsType } from '../api/auth-api'
 import { createSlice } from '@reduxjs/toolkit'
-import { clearData } from '../common/actions/common-actions'
-import { createAppAsyncThunk, handleServerAppError} from '../common/utils'
-import { thunkTryCatch } from '../common/utils/thunk-try-catch'
+import { clearData } from '../../../common/actions'
+import { createAppAsyncThunk, handleServerAppError} from '../../../common/utils'
+import { thunkTryCatch } from '../../../common/utils/thunk-try-catch'
 
 const authSlice = createSlice({
     name: 'auth',
