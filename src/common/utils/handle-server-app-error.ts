@@ -1,6 +1,6 @@
-import { AppDispatchType } from '../../store/store'
-import { ResponseType } from '../../api'
-import { appActions } from '../../store/app-reducer'
+import { AppDispatchType } from '../../app/store'
+import { ResponseType } from '../api'
+import { appActions } from '../../app/app-reducer'
 
 /**
  * Данная функция обрабатывает ошибки, которые могут возникнуть при взаимодействии с сервером.
@@ -13,5 +13,4 @@ export const handleServerAppError = <D>(dispatch: AppDispatchType, data: Respons
     if (showError) {
         dispatch(appActions.setAppError({ error: data.messages[0] }))
     }
-    dispatch(appActions.setAppStatus({ status: 'failed' }))
 }
