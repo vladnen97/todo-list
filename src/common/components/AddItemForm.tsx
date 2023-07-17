@@ -20,7 +20,7 @@ export const AddItemForm = memo(({ addItem, disabled = false }: AddItemFormProps
             addItem(trimmedTitle)
                 .then(() => {setTitle("")})
                 .catch(error => {
-                    setError(error.messages ? error.messages[0] : null)
+                    setError(error.data.messages ? error.data.messages[0] : null)
                 })
         } else {
             setError("Title is required");
