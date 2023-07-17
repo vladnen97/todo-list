@@ -1,4 +1,3 @@
-import { appActions } from '../../../../app/app-reducer'
 import { createSlice } from '@reduxjs/toolkit'
 import { todolistsThunks } from '../../todolists/model/todolists-reducer'
 import { clearData } from '../../../../common/actions'
@@ -97,13 +96,12 @@ const deleteTask = createAppAsyncThunk<{ todolistId: string; taskId: string }, {
 const updateTask = createAppAsyncThunk<{ task: TaskResponseType }, { todolistId: string; taskId: string; taskModel: TaskModelType }>(
     'tasks/updateTask',
     async (arg, thunkAPI) => {
-        const { dispatch, rejectWithValue, getState } = thunkAPI
+        const { rejectWithValue, getState } = thunkAPI
 
         return thunkTryCatch(thunkAPI, async () => {
             const task = getState().tasks[arg.todolistId].find(el => el.id === arg.taskId)
 
             if (!task) {
-                dispatch(appActions.setAppError({ error: 'Task not found in this state :(' }))
                 return rejectWithValue(null)
             }
 

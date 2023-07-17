@@ -1,5 +1,5 @@
 import { authThunks } from '../features/auth/model/auth-reducer'
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import { createAppAsyncThunk } from '../common/utils'
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
@@ -11,11 +11,7 @@ const appSlice = createSlice({
         error: null as string | null,
         isInitialized: false,
     },
-    reducers: {
-        setAppError: (state, action: PayloadAction<{ error: string | null }>) => {
-            state.error = action.payload.error
-        },
-    },
+    reducers: {},
     extraReducers: builder => {
         builder
             .addCase(initializeApp.fulfilled, (state, action) => {
